@@ -1,6 +1,7 @@
 type DataResource = {
     repository: "${string}/${string}";
     dataType: "githubTreeSource";
+    outDir?: string;
     branch?: string;
     filter?: RegExp;
 };

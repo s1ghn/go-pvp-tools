@@ -1,9 +1,9 @@
-import fetchResources from "$lib/data/data-sources";
+import fetchResources from "./data-sources";
 import path from "path";
 import fs from "fs";
 import { program } from "commander";
 
-const writeToDir = __dirname + "/../../static/data";
+const writeToDir = __dirname + "/../lib/data";
 
 export default program
     .option("-r, --refresh", "reload already fetched data")
@@ -16,21 +16,21 @@ async function fetchData(options: { refresh: boolean; }) {
     for (const i in fetchResources) {
         const fileSource = fetchResources[ i as keyof typeof fetchResources ] as DataResource | string;
 
+        // handle data types
+        if (fileSource instanceof Object) {
+            if (fileSource.dataType === "githubTreeSource") {
+                await downloadFolderFromGithub(i, fileSource, options);
+            }
+
+            continue;
+        }
+
         // skip if file / folder exists and not refreshing
         if (!options.refresh && (
             fs.existsSync(path.join(writeToDir, i))
             || fs.existsSync(path.join(writeToDir, i + ".json"))
         )) {
             console.log(`skipping ${i} - exists`);
-            continue;
-        }
-
-        // handle data types
-        if (fileSource instanceof Object) {
-            if (fileSource.dataType === "githubTreeSource") {
-                await downloadFolderFromGithub(i, fileSource);
-            }
-
             continue;
         }
 
@@ -84,8 +84,10 @@ function csvToJson(csv: string) {
     return JSON.stringify(result);
 }
 
-async function downloadFolderFromGithub(folderName: string, fileSource: DataResource) {
-    const response = await fetch(`https://api.github.com/repos/${fileSource.repository}/git/trees/master?recursive=1`);
+async function downloadFolderFromGithub(folderName: string, fileSource: DataResource, options: { refresh: boolean; }) {
+    const branch = fileSource.branch || "master";
+    const outDir = fileSource.outDir || writeToDir + "/" + folderName;
+    const response = await fetch(`https://api.github.com/repos/${fileSource.repository}/git/trees/${branch}?recursive=1`);
     if (!response.ok) {
         throw new Error(`failed to fetch ${fileSource.repository}`);
     }
@@ -94,6 +96,16 @@ async function downloadFolderFromGithub(folderName: string, fileSource: DataReso
 
     for (const file of data.tree) {
         const url = file.path;
+        const fileName = file.path.split("/").pop() as string;
+
+        // skip when existing and not refreshing
+        if (!options.refresh && (
+            fs.existsSync(path.join(outDir, fileName))
+            || fs.existsSync(path.join(outDir, fileName))
+        )) {
+            console.log(`skipping ${fileName} - exists`);
+            continue;
+        }
 
         // must match filter if set
         if (fileSource.filter && url.match(fileSource.filter) === null) {
@@ -102,7 +114,6 @@ async function downloadFolderFromGithub(folderName: string, fileSource: DataReso
 
         console.log(`fetching ${url} ...`);
 
-        const fileName = file.path.split("/").pop() as string;
         const downloadUrl = `https://raw.githubusercontent.com/${fileSource.repository}/master/${url}`;
         const response = await fetch(downloadUrl);
         if (!response.ok) {
@@ -110,11 +121,10 @@ async function downloadFolderFromGithub(folderName: string, fileSource: DataReso
         }
 
         const data = await response.arrayBuffer();
-        const filePathPrefix = path.join(writeToDir, folderName);
-        const filePath = path.join(writeToDir, folderName, fileName);
+        const filePath = path.join(outDir, fileName);
 
-        if (!fs.existsSync(filePathPrefix)) {
-            fs.mkdirSync(filePathPrefix, { recursive: true });
+        if (!fs.existsSync(outDir)) {
+            fs.mkdirSync(outDir, { recursive: true });
         }
 
         fs.writeFileSync(filePath, Buffer.from(data));
