@@ -1,10 +1,18 @@
 <script lang="ts">
+    interface $$Props extends FormElement {}
+
     import Input from "$lib/components/form/Input.svelte";
 
-    export let size = "md";
     export let value: string | number = "";
+
+    const safeToUseProps = {
+        ...$$restProps,
+        size: null,
+    };
 </script>
 
-<Input {size} let:classes>
-    <input type="text" class={classes} bind:value {...$$restProps} />
+<Input {...$$restProps} let:class={classes}>
+    <input type="text" class={classes} bind:value {...safeToUseProps} />
+
+    <slot name="append" />
 </Input>

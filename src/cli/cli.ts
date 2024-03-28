@@ -5,5 +5,6 @@ import packageJson from "../../package.json" assert { type: "json" };
 export default program
     .version(packageJson.version)
     .description(packageJson.description)
-    .command("fetch", "fetch data to build Database")
+    .command("fetch", "fetch data from original sources")
+    .command("build", "combine data into usable format for the app")
     .parse();

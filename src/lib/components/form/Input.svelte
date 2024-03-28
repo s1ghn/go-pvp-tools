@@ -1,13 +1,17 @@
 <script lang="ts">
-    export let size: "sm" | "md" | "lg" = "md";
+    interface $$Props extends FormElement {}
 
-    let classNames = {
-        sm: "p-1",
-        md: "p-3",
-        lg: "p-5",
-    };
+    type RequiredFormElement = Required<$$Props>;
+
+    export let size: RequiredFormElement["size"] = "md";
+
+    const sizeClass = {
+        sm: "",
+        md: "p-2",
+        lg: "p-4",
+    }[size];
 </script>
 
-<div class="input-group">
-    <slot classes={classNames[size]} />
+<div class="{sizeClass} inline-flex rounded-md border-2 w-full">
+    <slot class="bg-transparent font-semibold outline-none w-full" />
 </div>

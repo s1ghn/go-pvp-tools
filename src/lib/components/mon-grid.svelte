@@ -1,14 +1,20 @@
 <script lang="ts">
-    import language from "$lib/stores/language";
+    import language from "$lib/stores/languageStore";
     import type LeaguePokemon from "$lib/util/LeaguePokemon";
 
     export let pokemons: LeaguePokemon[] = [];
+    export let search: string = "";
+
+    $: monsFiltered = pokemons.filter((mon) => {
+        const searchString = new RegExp(search, "i");
+        return searchString.test(mon.translate() ?? mon.gm.speciesName);
+    });
 
     const lang = language;
 </script>
 
 <div class="grid grid-cols-4 gap-4 my-2 p-2">
-    {#each pokemons as mon}
+    {#each monsFiltered as mon}
         <div>
             <!-- {@debug translation} -->
             <div>#{mon.gm.dex}</div>
@@ -20,6 +26,12 @@
                     (Shadow)
                 {/if}
             </div>
+
+            {#each mon.evolutions as evolution}
+                {evolution}
+            {/each}
+
+            {mon.options.league}
         </div>
     {/each}
 </div>

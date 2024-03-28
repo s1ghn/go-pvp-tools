@@ -1,5 +1,5 @@
 export default {
-    "gm_pokemon": "https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/rankings/battlefrontiergreat/overall/rankings-2500.json",
+    "gm_pokemon": "https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/gamemaster/pokemon.json",
     "bl_great": "https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/rankings/all/overall/rankings-1500.json",
     "bl_ultra": "https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/rankings/all/overall/rankings-2500.json",
     "bl_master": "https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/rankings/all/overall/rankings-10000.json",
@@ -13,13 +13,4 @@ export default {
         // means: /pokemon_icon_${dex_no}_00.png
         "filter": /Images\/Pokemon\/pokemon_icon_[0-9]*_00\.png$/,
     },
-    "country_flags": {
-        "repository": "hampusborgos/country-flags",
-        "dataType": "githubTreeSource",
-        "branch": "main",
-        "outDir": __dirname + "/../../static/data/flags",
-        // only the base image, no shiny no event
-        // means: /pokemon_icon_${dex_no}_00.png
-        "filter": /svg\/.*\.svg$/,
-    }
 };
