@@ -12,7 +12,7 @@
 
 <div>
     <Input let:class={classes}>
-        <select class="{classes} cursor-pointer shadow-md" bind:value>
+        <select class="{classes} cursor-pointer" bind:value>
             {#each options as option}
                 <option value={option.value}>{option.text}</option>
             {/each}

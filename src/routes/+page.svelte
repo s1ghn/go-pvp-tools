@@ -1,20 +1,24 @@
 <script lang="ts">
 	import Textfield from "./../lib/components/form/Textfield.svelte";
-	import MonGrid from "./../lib/components/mon-grid.svelte";
 	import Select from "$lib/components/form/Select.svelte";
 	import SearchString from "$lib/util/SearchString";
 	import Checkbox from "$lib/components/form/Checkbox.svelte";
 	import localization from "../config/localization";
 	import languageStore from "$lib/stores/languageStore";
 	import FilterGenerator from "$lib/components/FilterGenerator.svelte";
+	import Card from "$lib/components/Card.svelte";
+	import LeagueSelector from "$lib/components/LeagueSelector.svelte";
+	import type { Pokemon } from "$lib/types/Pokemon";
+	import allMonsters from "$lib/data/build/pokemons.json";
 
-	// let selectedLeagues =
-	let maxCount = 150;
-	let useCrypto = false;
-	let specificPokemon = "";
+	const langKeys = Object.keys(
+		localization.languages,
+	) as (keyof typeof localization.languages)[];
+
+	let monsters: Pokemon[] = allMonsters;
 </script>
 
-<div class="dark:bg-stone-900 rounded-lg p-4 lg:p-8">
+<Card>
 	<div class="flex items-center gap:4 lg:gap-8">
 		<div class="flex-initial">
 			<h2 class="text-2xl mb-4">Select Language</h2>
@@ -22,7 +26,7 @@
 			<!-- Select Language -->
 			<Select
 				bind:value={$languageStore}
-				options={localization.languages.map((l) => {
+				options={langKeys.map((l) => {
 					const langTexts = {
 						en: "🇺🇸 English",
 						de: "🇩🇪 German",
@@ -45,4 +49,6 @@
 			<FilterGenerator></FilterGenerator>
 		</div>
 	</div>
-</div>
+</Card>
+
+<LeagueSelector bind:monsters></LeagueSelector>

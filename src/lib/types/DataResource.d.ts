@@ -1,6 +1,13 @@
 type DataResource = {
     repository: "${string}/${string}";
-    dataType: "githubTreeSource";
+    dataType?: "githubTreeSource";
+    // eslint-disable-next-line no-unused-vars
+    handler?: (srcList: {
+        [ file: string ]: string;
+    }) => void;
+    files?: {
+        [ file: string ]: string;
+    };
     outDir?: string;
     branch?: string;
     filter?: RegExp;

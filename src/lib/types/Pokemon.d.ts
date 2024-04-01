@@ -1,18 +1,21 @@
-import type localization from "../config/localization";
+import type localization from "../../config/localization";
 
 type Pokemon = {
     dex: number,
     speciesId: string,
     familyId: string | null,
+    types: [ string, string | "none" ],
+    isShadow: boolean,
     leagues: {
         [ league in League ]: {
             score: number,
         } | null
-    },
-    translations: {
-        [ lang: string ]: {
-            name: string,
-        };
+    };
+};
+
+type EvolutionsListLocalized = {
+    [ familyId: string ]: {
+        [ lang: string ]: string[];
     };
 };
 

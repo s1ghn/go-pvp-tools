@@ -18,6 +18,11 @@ module.exports = {
 		es2017: true,
 		node: true
 	},
+	rules: {
+		"no-unused-vars": "warn",
+		"prefer-const": "warn",
+		"@typescript-eslint/no-unused-vars": "warn",
+	},
 	overrides: [
 		{
 			files: [ '*.svelte' ],

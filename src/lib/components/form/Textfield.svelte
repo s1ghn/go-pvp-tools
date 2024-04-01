@@ -11,7 +11,7 @@
     };
 </script>
 
-<Input {...$$restProps} let:class={classes}>
+<Input let:class={classes}>
     <input type="text" class={classes} bind:value {...safeToUseProps} />
 
     <slot name="append" />

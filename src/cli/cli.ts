@@ -6,5 +6,4 @@ export default program
     .version(packageJson.version)
     .description(packageJson.description)
     .command("fetch", "fetch data from original sources")
-    .command("build", "combine data into usable format for the app")
     .parse();

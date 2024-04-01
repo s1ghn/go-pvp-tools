@@ -1,9 +1,14 @@
 <script>
     // @ts-ignore
-    import Icon from "mdi-svelte";
-    // @ts-ignore
     import { mdiContentCopy } from "@mdi/js";
     import Textfield from "./form/Textfield.svelte";
+    import Icon from "./Icon.svelte";
+
+    export let filterString = "";
+
+    const copyToClipboard = async () => {
+        navigator.clipboard.writeText(filterString);
+    };
 </script>
 
 <div>
@@ -13,7 +18,11 @@
         readonly
     >
         <div slot="append">
-            <Icon path={mdiContentCopy} />
+            <Icon
+                icon={mdiContentCopy}
+                class="cursor-pointer"
+                on:click={copyToClipboard}
+            />
         </div>
     </Textfield>
 </div>
