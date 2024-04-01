@@ -1,6 +1,5 @@
 import fetchResources from "./data-sources";
 import path from "path";
-import fs from "fs";
 import { program } from "commander";
 import { writeToFile } from "./file-handlers";
 

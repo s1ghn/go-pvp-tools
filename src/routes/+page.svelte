@@ -9,7 +9,7 @@
 	import Card from "$lib/components/Card.svelte";
 	import LeagueSelector from "$lib/components/LeagueSelector.svelte";
 	import type { Pokemon } from "$lib/types/Pokemon";
-	import allMonsters from "$lib/data/build/pokemons.json";
+	import allMonsters from "$lib/data/pokemon.json";
 
 	const langKeys = Object.keys(
 		localization.languages,

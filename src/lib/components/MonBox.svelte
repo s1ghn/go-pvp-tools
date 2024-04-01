@@ -1,17 +1,39 @@
 <script lang="ts">
+    import { __ } from "$lib/stores/translationStore";
     import type { Pokemon } from "$lib/types/Pokemon";
-    import languageStore from "$lib/stores/languageStore";
-    import translationStore from "$lib/stores/translationStore";
-    import Translation from "./Translation.svelte";
+    import typeColor from "$lib/util/typeColor";
 
     export let monster: Pokemon;
 
+    const type1color = typeColor(monster.types[0]);
+
     const monImageUrl = `/data/mon_images/pokemon_icon_${monster.dex.toString().padStart(3, "0")}_00.png`;
-    const isShadow: boolean =
-        monster.speciesId.indexOf("_shadow") === monster.speciesId.length - 7;
 </script>
 
-<div class="flex gap-2">
+<div class="flex flex-wrap align-center gap-2">
+    <!-- Status row -->
+    <div class="w-full flex justify-center -mt-3">
+        <!-- Leagues + ranking -->
+        <div class="">
+            {#each Object.entries(monster.leagues).filter(([name, league]) => !!league) as [name, league]}
+                <div
+                    class="backdrop-brightness-125 dark:backdrop-brightness-75 rounded-full mx-1 ms-auto py-1 px-2 inline-flex"
+                >
+                    <img
+                        src="/data/cup_images/pogo_{name}_league.png"
+                        alt={name}
+                        width="14"
+                        loading="lazy"
+                        class=""
+                    />
+                    <div class="text-xs font-bold ps-1">
+                        #{league?.rank}
+                    </div>
+                </div>
+            {/each}
+        </div>
+    </div>
+
     <!-- Image -->
     <div
         class="w-8 aspect-square bg-contain bg-center bg-no-repeat"
@@ -19,30 +41,11 @@
     ></div>
 
     <!-- Name -->
-    <div class="flex-1">
-        <Translation
-            key="pokemon_name_{monster.dex.toString().padStart(4, '0')}"
-        ></Translation>
+    <div class="flex-1 h-auto self-center">
+        {$__(`pokemon_name_${monster.dex.toString().padStart(4, "0")}`)}
 
-        {#if isShadow}
+        {#if monster.isShadow}
             (Shadow)
         {/if}
-    </div>
-
-    <div>
-        <!-- Leagues + ranking -->
-        <div class="flex">
-            {#each Object.entries(monster.leagues).filter(([name, league]) => !!league) as [name, league]}
-                <div>
-                    <img
-                        src="/data/cup_images/pogo_{name}_league.png"
-                        alt={name}
-                        width="24"
-                        loading="lazy"
-                    />
-                    <div>{league?.score}</div>
-                </div>
-            {/each}
-        </div>
     </div>
 </div>

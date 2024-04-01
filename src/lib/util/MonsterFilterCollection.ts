@@ -1,13 +1,23 @@
-import languageStore from "$lib/stores/languageStore";
-import type { EvolutionsListLocalized, Pokemon } from "$lib/types/Pokemon";
-import evolutionsData from "$lib/data/build/evolution-names-localized.json";
+import type { Pokemon } from "$lib/types/Pokemon";
+import pokemon from "$lib/data/pokemon.json";
+import { __ } from "$lib/stores/translationStore";
 
-const evolutions = evolutionsData as EvolutionsListLocalized;
+let localizedSpeciesIndexed: {
+    [ monsterNameLocalized: string ]: number[];
+} = {};
 
-let lang = "en";
+__.subscribe((t) => {
+    // clear list when lang changes
+    localizedSpeciesIndexed = {};
 
-languageStore.subscribe((l) => {
-    lang = l;
+    // build a fast filter list
+    for (let i = 0; i < pokemon.length; i++) {
+        const translatedName = t(`pokemon_name_${pokemon[ i ].dex.toString().padStart(4, "0")}`);
+
+        // push the pokemon list index to the fast filter list
+        localizedSpeciesIndexed[ translatedName ] ??= [];
+        localizedSpeciesIndexed[ translatedName ].push(i);
+    }
 });
 
 export default class MonsterFilterCollection {
@@ -16,34 +26,21 @@ export default class MonsterFilterCollection {
     }
 
     /**
-     * search by name
+     * search by translated name
      */
     public searchByName = (search: string): MonsterFilterCollection => {
-        const newMonsters = this.monsters.filter((mon) => {
-            let result = mon.translations[ lang ].name
-                .toLowerCase()
-                .includes(search.toLowerCase());
+        // search speciesId in fast indexed List
+        const exactMatches = Object.entries(localizedSpeciesIndexed)
+            // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+            .filter(([ name, _ ]) => name.toLowerCase().includes(search.toLowerCase()))
+            // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+            .flatMap(([ _, speciesIds ]) => speciesIds.map((speciesId) => this.monsters[ speciesId ]));
 
-            // if found or no family id, return
-            if (result || !mon.familyId) {
-                return result;
-            }
+        // broader search: familyId is the same as any exact match
+        const broaderMatches = this.monsters.filter(
+            (monster) => monster.familyId && exactMatches.some((exactMatch) => exactMatch.familyId === monster.familyId)
+        );
 
-            // also search evolutions
-            const evol = evolutions[ mon.familyId ];
-
-            if (!evol) {
-                console.warn(`No evolution family found for ${mon.familyId}`);
-                return false;
-            }
-
-            result = evol[ lang ].some((ev) => ev.toLowerCase().indexOf(search.toLowerCase()) !== -1);
-
-            return result;
-        });
-
-        this.monsters = newMonsters;
-
-        return this;
+        return new MonsterFilterCollection(broaderMatches);
     };
 }

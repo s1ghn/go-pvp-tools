@@ -9,9 +9,6 @@
     export let monsters: Pokemon[] = [];
 
     let searchString: string = "";
-    let selectedLeagues: string[] = [];
-    let maxCount: number = 200;
-    let filteredMonsters: Pokemon[] = [];
 
     $: filteredMons = new MonsterFilterCollection(monsters).searchByName(
         searchString,

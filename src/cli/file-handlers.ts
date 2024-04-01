@@ -1,4 +1,4 @@
-import type { League, Pokemon } from "../lib/types/Pokemon";
+import type { Pokemon } from "../lib/types/Pokemon";
 import fs from "fs";
 import path from "path";
 import type dataSources from "./data-sources";
@@ -7,7 +7,8 @@ import type dataSources from "./data-sources";
  * Creates a structure for pokemon with rankings
  */
 export function pokemonAndRankingFileHandler(srcList: {
-    [ K in keyof typeof dataSources[ "pokemon" ][ "files" ] ]: string;
+    // eslint-disable-next-line no-unused-vars
+    [ _ in keyof typeof dataSources[ "pokemon" ][ "files" ] ]: string;
 }) {
     const pokemon = JSON.parse(srcList[ "pokemon_list" ]) as {
         dex: number,
@@ -44,19 +45,17 @@ export function pokemonAndRankingFileHandler(srcList: {
                 "ultra": ultraLeague,
                 "master": masterLeague,
             }).map(([ name, data ]) => {
-                const found = data.find(d => d.speciesId === mon.speciesId);
+                const foundIndex = data.findIndex(d => d.speciesId === mon.speciesId);
+                const found = data[ foundIndex ];
 
                 return [ name, found
                     ? {
+                        rank: foundIndex + 1,
                         score: found.score,
                     }
                     : null
                 ];
-            })) as {
-                    [ league in League ]: {
-                        score: number,
-                    } | null
-                }
+            })) as Pokemon[ "leagues" ],
         });
     }
 
@@ -68,6 +67,7 @@ export function pokemonAndRankingFileHandler(srcList: {
  * Creates a [key: string]: string organized json file for pokeminer translations
  */
 export function translationHandler(srcList: {
+    // eslint-disable-next-line no-unused-vars
     [ K in keyof typeof dataSources[ "translations" ][ "files" ] ]: string;
 }) {
     for (const lang in srcList) {

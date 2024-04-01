@@ -7,8 +7,10 @@ type Pokemon = {
     types: [ string, string | "none" ],
     isShadow: boolean,
     leagues: {
-        [ league in League ]: {
+        // eslint-disable-next-line no-unused-vars
+        [ _ in League ]: {
             score: number,
+            rank: number,
         } | null
     };
 };
