@@ -4,6 +4,8 @@
     import { onMount } from "svelte";
     import throttle from "lodash/throttle";
     import MonBox from "./MonBox.svelte";
+    import MonsterFilterCollection from "$lib/util/MonsterFilterCollection";
+    import Textfield from "./form/Textfield.svelte";
 
     export let monsters: Pokemon[] = [];
 
@@ -20,16 +22,24 @@
             (loadMonstersCount += 40);
     }, 600);
 
+    let searchString = "";
+
     // determine monsters on screen
-    $: visibleMonsters = monsters.slice(0, loadMonstersCount);
+    $: visibleMonsters = new MonsterFilterCollection(monsters)
+        .searchByName(searchString)
+        .monsters.slice(0, loadMonstersCount);
 
     onMount(() => {
         window.addEventListener("scroll", scrollHandler);
     });
 </script>
 
+<div>
+    <!-- Search -->
+    <Textfield placeholder="Search Pokemon..." bind:value={searchString} />
+</div>
 <div
-    class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 lg:px-8"
+    class="grid auto-rows-max md:grid-cols-2 lg:grid-cols-3 gap-4"
     bind:this={gridElement}
 >
     {#each visibleMonsters as mon (`${mon.speciesId}-${$languageStore}`)}

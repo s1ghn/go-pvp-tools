@@ -1,4 +1,4 @@
-import langImport from "../lib/data/languages.json";
+import langImport from "../data/languages.json";
 
 const localization = {
     languages: {

@@ -11,8 +11,6 @@ export default program
     .parse(process.argv);
 
 async function fetchData(handler: keyof typeof fetchResources) {
-    console.log();
-
     for (const i in fetchResources) {
         let writeToDir = __dirname + "/../lib/data";
 
@@ -52,24 +50,32 @@ async function fetchData(handler: keyof typeof fetchResources) {
 
         // download files specified in file list
         const contentList: {
-            [ file: string ]: string;
+            [ file: string ]: string | Uint8Array;
         } = {};
 
         for (const fi in fileList) {
             console.log(`fetching ${fi} ...`);
             const response = await fetch(fileList[ fi ]);
 
+            // get original file ending
+            const ext = path.parse(fileList[ fi ]).ext;
+
             if (!response.ok) {
                 throw new Error(`failed to fetch ${fileList[ fi ]}`);
             }
 
-            const data = await response.text();
+            // load an image?
+            const contentType = response.headers.get('content-type');
+            const data: Uint8Array | string = contentType?.includes("text") || contentType?.includes("json")
+                ? await response.text()
+                : new Uint8Array(await response.arrayBuffer());
+
             contentList[ fi ] = data;
 
             // write to file if no handler
             // default is .json
-            if (typeof fileSource === "object" && !fileSource.handler) {
-                writeToFile(data, path.join(writeToDir, fi + ".json"));
+            if (typeof fileSource === "object" && !fileSource.handler || typeof fileSource === "string") {
+                writeToFile(data, path.join(writeToDir, fi + ext));
             }
         }
 

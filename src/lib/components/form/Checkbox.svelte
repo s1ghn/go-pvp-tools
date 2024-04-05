@@ -1,18 +1,21 @@
 <script lang="ts">
-    import Input from "$lib/components/form/Input.svelte";
+    import type { HTMLInputAttributes } from "svelte/elements";
+
+    interface $$Props extends HTMLInputAttributes {
+        checked?: boolean;
+    }
 
     export let checked: boolean = false;
 </script>
 
-<Input>
-    <label>
-        <input
-            type="checkbox"
-            class="form-checkbox"
-            bind:checked
-            {...$$restProps}
-        />
+<label class="block w-100 cursor-pointer select-none p-1">
+    <input
+        type="checkbox"
+        class="form-checkbox"
+        bind:checked
+        on:change
+        {...$$restProps}
+    />
 
-        <slot />
-    </label>
-</Input>
+    <slot />
+</label>

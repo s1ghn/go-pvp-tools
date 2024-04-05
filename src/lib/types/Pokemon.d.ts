@@ -1,10 +1,12 @@
-import type localization from "../../config/localization";
+import type localization from "../config/localization";
+
+type PokemonTypes = "bug" | "dark" | "dragon" | "electric" | "fairy" | "fighting" | "fire" | "flying" | "ghost" | "grass" | "ground" | "ice" | "normal" | "poison" | "psychic" | "rock" | "steel" | "water";
 
 type Pokemon = {
     dex: number,
     speciesId: string,
     familyId: string | null,
-    types: [ string, string | "none" ],
+    types: [ PokemonTypes, PokemonTypes | "none" ],
     isShadow: boolean,
     leagues: {
         // eslint-disable-next-line no-unused-vars

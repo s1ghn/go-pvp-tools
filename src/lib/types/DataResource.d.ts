@@ -3,7 +3,7 @@ type DataResource = {
     dataType?: "githubTreeSource";
     // eslint-disable-next-line no-unused-vars
     handler?: (srcList: {
-        [ file: string ]: string;
+        [ file: string ]: string | Uint8Array;
     }) => void;
     files?: {
         [ file: string ]: string;

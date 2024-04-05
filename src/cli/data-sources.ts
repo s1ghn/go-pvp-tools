@@ -1,4 +1,4 @@
-import localization from "../config/localization";
+import localization from "../lib/config/localization";
 import { pokemonAndRankingFileHandler, translationHandler } from "./file-handlers";
 
 export default {
@@ -37,5 +37,11 @@ export default {
         // only the base image, no shiny no event
         // means: /pokemon_icon_${dex_no}_00.png
         "filter": /Images\/Combat\/pogo_.*_league\.png$/,
+    },
+    "materials": {
+        "files": {
+            "shadow_icon": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Raids/shadow_icon.png",
+        },
+        "outDir": __dirname + "/../../static/data/materials",
     },
 };

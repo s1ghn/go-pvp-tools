@@ -1,18 +1,27 @@
 <script lang="ts">
-    interface $$Props extends FormElement {}
+    import type { HTMLInputAttributes } from "svelte/elements";
+
+    interface $$Props extends HTMLInputAttributes {
+        s?: "sm" | "md" | "lg";
+    }
 
     import Input from "$lib/components/form/Input.svelte";
 
-    export let value: string | number = "";
-
-    const safeToUseProps = {
-        ...$$restProps,
-        size: null,
-    };
+    export let value: $$Props["value"] = "";
+    export let s: $$Props["s"] = "md";
 </script>
 
-<Input let:class={classes} {...$$restProps}>
-    <input type="text" class={classes} bind:value {...safeToUseProps} />
+<Input let:class={classes} {s}>
+    <label class="flex w-full items-center">
+        <slot name="prepend" />
 
-    <slot name="append" />
+        <input
+            type="text"
+            class="{classes} flex-1"
+            bind:value
+            {...$$restProps}
+        />
+
+        <slot name="append" />
+    </label>
 </Input>

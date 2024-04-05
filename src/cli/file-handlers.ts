@@ -1,4 +1,4 @@
-import type { Pokemon } from "../lib/types/Pokemon";
+import type { Pokemon, PokemonTypes } from "../lib/types/Pokemon";
 import fs from "fs";
 import path from "path";
 import type dataSources from "./data-sources";
@@ -38,8 +38,8 @@ export function pokemonAndRankingFileHandler(srcList: {
             dex: mon.dex,
             speciesId: mon.speciesId,
             familyId: mon.family?.id ?? null,
-            types: mon.types as [ string, string ],
-            isShadow: mon.speciesId.indexOf("_shadow") === mon.speciesId.length - 7,
+            types: mon.types as [ PokemonTypes, PokemonTypes ],
+            isShadow: mon.speciesId.includes("_shadow"),
             leagues: Object.fromEntries(Object.entries({
                 "great": greatLeague,
                 "ultra": ultraLeague,
@@ -96,7 +96,7 @@ export function translationHandler(srcList: {
 /**
  * This should write to a file and create missing folders along the way
  */
-export function writeToFile(data: string, filePath: string) {
+export function writeToFile(data: string | Uint8Array, filePath: string) {
     const folder = path.dirname(filePath);
 
     // write to file, create missing folders along the way
