@@ -56,7 +56,7 @@ export default class MonsterFilterCollection {
     /**
      * Filter by league
      */
-    public filterByLeague = (includeLeagues: typeof leagues.rankings[ number ][]): MonsterFilterCollection => {
+    public filterByLeague = (includeLeagues: typeof leagues.rankings[ number ][], upUntilRank: number | null = null): MonsterFilterCollection => {
         // leagues empty: return all
         if (includeLeagues.length === 0) {
             return new MonsterFilterCollection(this.monsters);
@@ -64,21 +64,15 @@ export default class MonsterFilterCollection {
 
         return new MonsterFilterCollection(
             this.monsters.filter(
-                (monster) => includeLeagues.some(l => monster.leagues[ l ] !== null)
+                (monster) =>
+                    includeLeagues.some(
+                        l =>
+                            // must be in leagues
+                            monster.leagues[ l ] !== null
+
+                            // must be up until rank, if set
+                            && (upUntilRank === null || monster.leagues[ l ]!.rank <= upUntilRank)
+                    )
             ));
-    };
-
-    /**
-     * Sort by score
-     */
-    public sortByScore = (league: keyof typeof leagues.rankings[ number ]): MonsterFilterCollection => {
-        return new MonsterFilterCollection(
-            this.monsters.sort((a, b) => {
-                const scoreA = a.leagues[ league ]?.score ?? 0;
-                const scoreB = b.leagues[ league ]?.score ?? 0;
-
-                return scoreB - scoreA;
-            })
-        );
     };
 }

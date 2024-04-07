@@ -4,13 +4,19 @@
     import { mdiContentCopy } from "@mdi/js";
     import Textfield from "./form/Textfield.svelte";
     import Icon from "./Icon.svelte";
-    import Select from "./form/Select.svelte";
     import Checkbox from "./form/Checkbox.svelte";
     import { __ } from "$lib/stores/translationStore";
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
     import { browser } from "$app/environment";
     import Button from "./form/Button.svelte";
+    import type SearchStringOutput from "$lib/util/SearchStringOutput";
+    import SearchBuilder from "$lib/util/SearchBuilder";
+    import allMonsters from "$lib/data/pokemon.json";
+    import type { Pokemon } from "$lib/types/Pokemon";
+    import MonsterFilterCollection from "$lib/util/MonsterFilterCollection";
+
+    const monsters = allMonsters as Pokemon[];
 
     let maxCount: string = "200";
     let selectedLeagues: {
@@ -19,6 +25,8 @@
     let allLeaguesSelected = false;
     let excludeCustomTags = writable<string[]>([]);
     let newExcludeTag = "";
+    let dialogueOpen = false;
+    let searchStringOutput: SearchStringOutput[];
 
     function toggleAllLeagues() {
         leagues.rankings.forEach((league, index) => {
@@ -27,13 +35,13 @@
         allLeaguesSelected = true;
     }
 
-    let checkLeagueSelection = () => {
+    function checkLeagueSelection() {
         if (allLeaguesSelected) {
             toggleAllLeagues();
         } else {
             selectedLeagues = {};
         }
-    };
+    }
 
     // should toggle allLeaguesSelected when either all leagues are selected or none
     function checkAllSelection() {
@@ -62,6 +70,22 @@
         excludeCustomTags.set(
             $excludeCustomTags.filter((value) => value !== tag),
         );
+    }
+
+    function generateSearchString() {
+        const filteredMonsters = new MonsterFilterCollection(
+            monsters,
+        ).filterByLeague(
+            Object.entries(selectedLeagues)
+                .filter(([, value]) => value)
+                .map(([key]) => key) as (typeof leagues.rankings)[number][],
+            +maxCount,
+        ).monsters;
+
+        searchStringOutput = new SearchBuilder(
+            filteredMonsters,
+        ).outputStrings();
+        dialogueOpen = true;
     }
 
     $: maxCount = maxCount.replace(/[^0-9]/g, "");
@@ -137,13 +161,25 @@
         {/each}
     </div>
 
-    <Textfield
-        s="lg"
-        placeholder="Your generated Pokemon Go search filter will appear here."
-        readonly
+    <!-- Generate Button -->
+    <Button id="GenerateSearchString" on:click={generateSearchString}>
+        Generate search string
+    </Button>
+
+    <!-- Output -->
+    <div
+        class="{dialogueOpen
+            ? 'fixed'
+            : 'hidden'} backdrop-blur-md inset-0 flex items-center z-50"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="GenerateSearchString"
     >
-        <div slot="append">
-            <Icon icon={mdiContentCopy} class="cursor-pointer" />
-        </div>
-    </Textfield>
+        <!-- {@debug searchStringOutput} -->
+        {#if searchStringOutput}
+            {#each searchStringOutput as output (output.category)}
+                <Textfield value={output.value}></Textfield>
+            {/each}
+        {/if}
+    </div>
 </div>
