@@ -2,13 +2,14 @@ import { __ } from "$lib/stores/translationStore";
 import type { Pokemon } from "$lib/types/Pokemon";
 import SearchStringOutput from "./SearchStringOutput";
 
+// TODO: Seperate League Strings, remove filter generation selection
+
 type Config = {
     /**
-     * Whether to include these Pokemon or exclude,
-     * making the search add negating prefixes.
+     * only include either the better shadow or regular,
+     * but not both
      */
-    inclusive: boolean;
-
+    noMixedShadowForms: boolean;
 };
 
 let translate = (key: string) => key;
@@ -40,9 +41,11 @@ export default class SearchBuilder {
 
             const dexEntry = shadowFiltered.get(monster.dex)!;
             dexEntry[
+                // actually want the opposite filter to be used
+                // so include the non included & category
                 monster.isShadow
-                    ? shadowTranslation
-                    : `!${shadowTranslation}`
+                    ? `!${shadowTranslation}`
+                    : shadowTranslation
             ] = true;
         });
 
@@ -58,6 +61,8 @@ export default class SearchBuilder {
                         if (Object.values(filter).length > 1) {
                             return null;
                         }
+
+                        console.log(monster.speciesId);
 
                         return Object.keys(filter)[ 0 ];
                     },
