@@ -26,6 +26,7 @@ jobs:
           path: |
             src/lib/data
             src/lib/translations
+            static/data
           key: ${{ runner.os }}-fetched-${{ hashFiles('./GAMEINFO.md') }}
 
       - name: Fetch Data
