@@ -40,7 +40,7 @@ export default {
     },
     "materials": {
         "files": {
-            "shadow_icon": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Raids/shadow_icon.png",
+            "shadow": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Raids/shadow_icon.png",
         },
         "outDir": __dirname + "/../../static/data/materials",
     },

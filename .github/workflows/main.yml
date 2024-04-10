@@ -36,9 +36,6 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Copy static assets
-        run: cp -r static build/
-
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -48,6 +45,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
 
     steps:
       - name: Checkout code

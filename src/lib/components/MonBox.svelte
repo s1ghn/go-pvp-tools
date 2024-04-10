@@ -31,7 +31,7 @@
         {#if monster.isShadow}
             <div
                 class="absolute size-14 -z-10 inset-3 bg-no-repeat bg-center bg-contain rounded-full"
-                style="background-image: url({base}/data/materials/shadow_icon.png)"
+                style="background-image: url({base}/data/materials/shadow.PNG)"
             ></div>
         {/if}
 
