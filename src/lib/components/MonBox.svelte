@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { base } from "$app/paths";
     import { __ } from "$lib/stores/translationStore";
     import type { Pokemon } from "$lib/types/Pokemon";
     import typeColor from "$lib/util/typeColor";
@@ -8,7 +9,7 @@
     const type1color = typeColor(monster.types[0]);
     const type2color = typeColor(monster.types[1]) ?? type1color;
 
-    const monImageUrl = `/data/mon_images/pokemon_icon_${monster.dex.toString().padStart(3, "0")}_00.png`;
+    const monImageUrl = `${base}/data/mon_images/pokemon_icon_${monster.dex.toString().padStart(3, "0")}_00.png`;
 </script>
 
 <div
@@ -30,7 +31,7 @@
         {#if monster.isShadow}
             <div
                 class="absolute size-14 -z-10 inset-3 bg-no-repeat bg-center bg-contain rounded-full"
-                style="background-image: url(/data/materials/shadow_icon.png)"
+                style="background-image: url({base}/data/materials/shadow_icon.png)"
             ></div>
         {/if}
 
@@ -66,7 +67,7 @@
                         class="backdrop-brightness-125 dark:backdrop-brightness-75 rounded-full mx-1 ms-auto py-1 px-2 inline-flex"
                     >
                         <img
-                            src="/data/cup_images/pogo_{name}_league.png"
+                            src="{base}/data/cup_images/pogo_{name}_league.png"
                             alt={name}
                             width="14"
                             loading="lazy"

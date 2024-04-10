@@ -9,7 +9,10 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-	}
+		paths: {
+			base: '/go-pvp-tools',
+		}
+	},
 };
 
 export default config;
