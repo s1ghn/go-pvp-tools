@@ -4,7 +4,7 @@ import { program } from "commander";
 import { writeToFile } from "./file-handlers";
 
 export default program
-    .argument("<handler>", "only fetch data for a specific handler")
+    .argument("[handler]", "only fetch data for a specific handler")
     .action(async (options) => {
         fetchData(options);
     })

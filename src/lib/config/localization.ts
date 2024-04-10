@@ -1,5 +1,3 @@
-import langImport from "../data/languages.json";
-
 const localization = {
     languages: {
         "en": "english",
@@ -12,7 +10,3 @@ const localization = {
 };
 
 export default localization;
-
-export function getInUseLanguageIds(): number[] {
-    return langImport.filter(lang => (Object.keys(localization.languages) as readonly string[]).includes(lang.identifier!)).map(lang => +lang.id);
-}
