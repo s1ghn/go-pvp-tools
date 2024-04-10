@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  pages:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,30 +35,6 @@ jobs:
 
       - name: Build app
         run: npm run build
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist
-          path: build/
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
