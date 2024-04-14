@@ -13,7 +13,7 @@
 </script>
 
 <div
-    class="flex gap-2 lg:gap-4 h-20 p-2 bg-gradient-to-r from-10% to-90% shadow-stone-500 shadow-md rounded-lg"
+    class="flex items-center gap-2 lg:gap-4 p-2 bg-gradient-to-r from-10% to-90% shadow-stone-500 dark:shadow-stone-950 shadow-md rounded-lg text-stone-900 dark:text-stone-100"
     style="
     --tw-gradient-from: {type1color};
     --tw-gradient-to: {type2color};
@@ -41,44 +41,42 @@
         ></div>
     </div>
 
-    <div class="flex-1">
+    <div class="flex-grow">
         <!-- Name -->
-        <div class="flex-1 h-auto self-center">
-            <div class="font-bold">
-                #{monster.dex}
-                {$__(`pokemon_name_${monster.dex.toString().padStart(4, "0")}`)}
+        <div
+            class="font-extrabold drop-shadow-outlined"
+            title={monster.speciesId}
+        >
+            {$__(`pokemon_name_${monster.dex.toString().padStart(4, "0")}`)}
+            #{monster.dex}
 
-                {#if monster.isShadow}
-                    (Shadow)
-                {/if}
-            </div>
-
-            <div class="text-sm">
-                {monster.speciesId}
-            </div>
+            {#if monster.isShadow}
+                (Shadow)
+            {/if}
         </div>
 
-        <!-- Status row -->
-        <div class="w-full flex">
-            <!-- Leagues + ranking -->
-            <div class="">
-                {#each Object.entries(monster.leagues).filter(([name, league]) => !!league) as [name, league]}
-                    <div
-                        class="backdrop-brightness-125 dark:backdrop-brightness-75 rounded-full mx-1 ms-auto py-1 px-2 inline-flex"
-                    >
-                        <img
-                            src="{base}/data/cup_images/pogo_{name}_league.png"
-                            alt={name}
-                            width="14"
-                            loading="lazy"
-                            class=""
-                        />
-                        <div class="text-xs font-bold ps-1">
-                            #{league?.rank}
-                        </div>
-                    </div>
-                {/each}
-            </div>
+        <div class="break-all">
+            {monster.speciesId}
         </div>
+    </div>
+
+    <!-- Leagues + ranking -->
+    <div class="flex flex-col flex-shrink-0">
+        {#each Object.entries(monster.leagues).filter(([name, league]) => !!league) as [name, league]}
+            <div
+                class="backdrop-brightness-125 dark:backdrop-brightness-75 rounded-full my-1 ms-auto py-1 px-2 inline-flex"
+            >
+                <img
+                    src="{base}/data/cup_images/pogo_{name}_league.png"
+                    alt={name}
+                    width="14"
+                    loading="lazy"
+                    class=""
+                />
+                <div class="text-xs font-bold ps-1">
+                    #{league?.rank}
+                </div>
+            </div>
+        {/each}
     </div>
 </div>

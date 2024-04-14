@@ -54,9 +54,8 @@ jobs:
 
       - name: Build app
         run: npm run build
-
-      - name: List directory contents
-        run: echo $PWD
+        
+      - run: cp build/index.html build/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

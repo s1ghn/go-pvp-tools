@@ -19,6 +19,7 @@
             type="text"
             class="{classes} flex-1"
             bind:value
+            on:input
             {...$$restProps}
         />
 

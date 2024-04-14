@@ -3,7 +3,12 @@
     export let color: string = "currentColor";
 </script>
 
-<svg viewBox="0 0 24 24" class="" style="width: 1.5em;" {...$$restProps}>
+<svg
+    viewBox="0 0 24 24"
+    class="inline-block"
+    style="width: 1.5em;"
+    {...$$restProps}
+>
     <g>
         <path d={icon} fill={color}></path>
     </g>

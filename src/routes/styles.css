@@ -2,4 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import "@fontsource/atkinson-hyperlegible/"; */
+body {
+  @apply bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200;
+}

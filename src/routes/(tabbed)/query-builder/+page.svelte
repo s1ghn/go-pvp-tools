@@ -1,15 +1,12 @@
 <script lang="ts">
     import leagues from "$lib/config/leagues";
     // @ts-ignore
-    import { mdiContentCopy } from "@mdi/js";
-    import Textfield from "./form/Textfield.svelte";
-    import Icon from "./Icon.svelte";
-    import Checkbox from "./form/Checkbox.svelte";
+    import Textfield from "$lib/components/form/Textfield.svelte";
+    import Checkbox from "$lib/components/form/Checkbox.svelte";
     import { __ } from "$lib/stores/translationStore";
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
-    import { browser } from "$app/environment";
-    import Button from "./form/Button.svelte";
+    import Button from "$lib/components/form/Button.svelte";
     import type SearchStringOutput from "$lib/util/SearchStringOutput";
     import SearchBuilder from "$lib/util/SearchBuilder";
     import allMonsters from "$lib/data/pokemon.json";
