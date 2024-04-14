@@ -47,8 +47,9 @@
         {@const route = getRoute(tab)}
         <a
             href="{base}/{route.path}"
-            class="block w-full text-center {isActive &&
-                'text-stone-950 dark:text-stone-50'}"
+            class="block w-full text-center {isActive
+                ? 'text-stone-950 dark:text-stone-50'
+                : 'text-stone-400 dark:text-stone-500'}"
         >
             <Icon icon={route.icon}></Icon>
 
@@ -60,11 +61,11 @@
 
     <div
         slot="content"
-        class="px-4 pt-4 overflow-auto h-[calc(100vh-4rem)] lg:h-[calc(100vh-6rem)]"
+        class="flex flex-col h-[calc(100svh-4rem)] lg:h-[calc(100svh-6rem)]"
     >
         <slot name="header" />
 
-        <div class="">
+        <div class="overflow-auto">
             <slot />
         </div>
     </div>

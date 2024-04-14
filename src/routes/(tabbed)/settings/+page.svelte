@@ -41,7 +41,7 @@
             </SettingsItem>
 
             <SettingsItem>
-                <div slot="label">Theme color</div>
+                <div slot="label">Dark mode</div>
 
                 <Select
                     options={[

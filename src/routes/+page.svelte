@@ -42,12 +42,12 @@
 </script>
 
 <AppTab>
-	<div slot="header" class="mb-4">
+	<div slot="header" class="p-4">
 		<!-- Search -->
 		<Textfield placeholder="Search Pokemon..." on:input={searchHandler} />
 	</div>
 
-	<div class="max-w-screen-2xl">
+	<div class="max-w-screen-2xl px-4">
 		<div
 			class="grid auto-rows-max md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
 			bind:this={gridElement}
