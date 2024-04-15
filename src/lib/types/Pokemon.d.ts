@@ -8,6 +8,8 @@ type Pokemon = {
     familyId: string | null,
     types: [ PokemonTypes, PokemonTypes | "none" ],
     isShadow: boolean,
+    isMega: boolean,
+    regionalVariant: string | null,
     leagues: {
         // eslint-disable-next-line no-unused-vars
         [ _ in League ]: {

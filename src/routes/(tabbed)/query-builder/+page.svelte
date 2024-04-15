@@ -1,4 +1,5 @@
 <script lang="ts">
+    import SearchFilterConfigurator from "./SearchFilterConfigurator.svelte";
     import leagues from "$lib/config/leagues";
     // @ts-ignore
     import Textfield from "$lib/components/form/Textfield.svelte";
@@ -103,80 +104,5 @@
 </script>
 
 <div class="">
-    <h2 class="text-2xl mb-4">Generate Searchstring</h2>
-
-    <!-- Max count -->
-    <div class="flex-auto mb-4">
-        <Textfield bind:value={maxCount}>
-            <div
-                slot="prepend"
-                class="whitespace-nowrap text-stone-400 font-bold select-none"
-            >
-                Max Count
-            </div>
-        </Textfield>
-    </div>
-
-    <!-- Leagues -->
-    <h3 class="text-lg mb-4">Filter Leagues</h3>
-    <div class="mb-4 p-2 dark:bg-stone-800 bg-stone-300 rounded-lg">
-        <Checkbox
-            bind:checked={allLeaguesSelected}
-            on:change={checkLeagueSelection}
-        >
-            All
-        </Checkbox>
-        {#each leagues.rankings as league (league)}
-            <Checkbox
-                bind:checked={selectedLeagues[league]}
-                on:change={checkAllSelection}
-                >{$__(`combat_${league}_league`)}</Checkbox
-            >
-        {/each}
-    </div>
-
-    <!-- Exclude custom Tags -->
-    <h3 class="text-lg mb-4">Exclude custom Tags</h3>
-    <div class="mb-4 p-2 dark:bg-stone-800 bg-stone-300 rounded-lg">
-        <div class="flex gap-2">
-            <Textfield bind:value={newExcludeTag}>
-                <div
-                    slot="prepend"
-                    class="whitespace-nowrap text-stone-400 font-bold select-none"
-                >
-                    Add Tag
-                </div>
-            </Textfield>
-
-            <Button on:click={addTagToList}>Add</Button>
-        </div>
-
-        {#each $excludeCustomTags as tag}
-            <Checkbox checked on:change={() => removeTagFromList(tag)}>
-                {tag}
-            </Checkbox>
-        {/each}
-    </div>
-
-    <!-- Generate Button -->
-    <Button id="GenerateSearchString" on:click={generateSearchString}>
-        Generate search string
-    </Button>
-
-    <!-- Output -->
-    <div
-        class="{dialogueOpen
-            ? 'fixed'
-            : 'hidden'} backdrop-blur-md inset-0 flex items-center z-50"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="GenerateSearchString"
-    >
-        <!-- {@debug searchStringOutput} -->
-        {#if searchStringOutput}
-            {#each searchStringOutput as output (output.category)}
-                <Textfield value={output.value}></Textfield>
-            {/each}
-        {/if}
-    </div>
+    <SearchFilterConfigurator></SearchFilterConfigurator>
 </div>

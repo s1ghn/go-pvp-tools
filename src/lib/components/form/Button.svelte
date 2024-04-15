@@ -14,6 +14,9 @@
     }[s];
 </script>
 
-<button class="{sizeClass} bg-orange-600 text-white" on:click>
+<button
+    class="{sizeClass} bg-orange-600 text-white w-full {$$restProps.class}"
+    on:click
+>
     <slot />
 </button>

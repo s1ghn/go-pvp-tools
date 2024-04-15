@@ -4,7 +4,7 @@
     import localization from "$lib/config/localization";
     import appThemeStore from "$lib/stores/appThemeStore";
     import languageStore from "$lib/stores/languageStore";
-    import SettingsItem from "./SettingsItem.svelte";
+    import SettingsItem from "$lib/components/SettingsItem.svelte";
 
     const langKeys = Object.keys(
         localization.languages,

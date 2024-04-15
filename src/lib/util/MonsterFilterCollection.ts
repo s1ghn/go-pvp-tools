@@ -53,26 +53,30 @@ export default class MonsterFilterCollection {
         return new MonsterFilterCollection(broaderMatches);
     };
 
-    /**
-     * Filter by league
-     */
-    public filterByLeague = (includeLeagues: typeof leagues.rankings[ number ][], upUntilRank: number | null = null): MonsterFilterCollection => {
-        // leagues empty: return all
-        if (includeLeagues.length === 0) {
-            return new MonsterFilterCollection(this.monsters);
+    public orderByRank = (league: (typeof leagues.rankings)[ number ] | null): MonsterFilterCollection => {
+        // do nothing if no league is selected
+        if (!league) {
+            return new MonsterFilterCollection(
+                this.monsters
+            );
         }
 
         return new MonsterFilterCollection(
-            this.monsters.filter(
-                (monster) =>
-                    includeLeagues.some(
-                        l =>
-                            // must be in leagues
-                            monster.leagues[ l ] !== null
+            this.monsters
+                .sort((a, b) => {
+                    const aRank = a.leagues[ league ]?.rank;
+                    const bRank = b.leagues[ league ]?.rank;
 
-                            // must be up until rank, if set
-                            && (upUntilRank === null || monster.leagues[ l ]!.rank <= upUntilRank)
-                    )
-            ));
+                    if (aRank === undefined) {
+                        return 1;
+                    }
+
+                    if (bRank === undefined) {
+                        return -1;
+                    }
+
+                    return aRank - bRank;
+                })
+        );
     };
 }

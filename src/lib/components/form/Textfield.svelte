@@ -20,6 +20,7 @@
             class="{classes} flex-1"
             bind:value
             on:input
+            on:focus
             {...$$restProps}
         />
 

@@ -41,7 +41,7 @@
     bind:activeTab={currentMainRoute}
     color="bg-stone-200 dark:bg-stone-800"
     hasMobileDesign
-    class="flex-grow"
+    class="flex-grow max-w-screen-2xl mx-auto"
 >
     <div slot="tab" let:tab let:isActive class="w-full">
         {@const route = getRoute(tab)}
@@ -65,7 +65,7 @@
     >
         <slot name="header" />
 
-        <div class="overflow-auto">
+        <div on:scroll class="overflow-auto">
             <slot />
         </div>
     </div>

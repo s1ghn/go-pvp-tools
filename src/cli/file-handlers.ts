@@ -3,6 +3,15 @@ import fs from "fs";
 import path from "path";
 import type dataSources from "./data-sources";
 
+type PokemonSource = {
+    dex: number,
+    speciesId: string,
+    family: {
+        id: string,
+    } | null,
+    types: [ string, string ],
+};
+
 /**
  * Creates a structure for pokemon with rankings
  */
@@ -10,14 +19,7 @@ export function pokemonAndRankingFileHandler(srcList: {
     // eslint-disable-next-line no-unused-vars
     [ _ in keyof typeof dataSources[ "pokemon" ][ "files" ] ]: string;
 }) {
-    const pokemon = JSON.parse(srcList[ "pokemon_list" ]) as {
-        dex: number,
-        speciesId: string,
-        family: {
-            id: string,
-        } | null,
-        types: [ string, string ],
-    }[];
+    const pokemon = JSON.parse(srcList[ "pokemon_list" ]) as PokemonSource[];
 
     type LeagueRanking = {
         speciesId: string,
@@ -40,6 +42,8 @@ export function pokemonAndRankingFileHandler(srcList: {
             familyId: mon.family?.id ?? null,
             types: mon.types as [ PokemonTypes, PokemonTypes ],
             isShadow: mon.speciesId.includes("_shadow"),
+            isMega: mon.speciesId.includes("_mega"),
+            regionalVariant: getRegionalVariant(mon),
             leagues: Object.fromEntries(Object.entries({
                 "great": greatLeague,
                 "ultra": ultraLeague,
@@ -105,4 +109,20 @@ export function writeToFile(data: string | Uint8Array, filePath: string) {
     }
 
     fs.writeFileSync(filePath, data);
+}
+
+function getRegionalVariant(pokemon: PokemonSource): string | null {
+    const regions = {
+        "alolan": "alola",
+        "hisuian": "hisui",
+        "galarian": "galar",
+    };
+
+    for (const region in regions) {
+        if (pokemon.speciesId.includes(`_${region}`)) {
+            return regions[ region as keyof typeof regions ];
+        }
+    }
+
+    return null;
 }
