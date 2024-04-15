@@ -2,6 +2,7 @@
     import { base } from "$app/paths";
     import { __ } from "$lib/stores/translationStore";
     import type { Pokemon } from "$lib/types/Pokemon";
+    import monsterImageUrl from "$lib/util/monsterImageUrl";
     import typeColor from "$lib/util/typeColor";
 
     export let monster: Pokemon;
@@ -9,7 +10,7 @@
     const type1color = typeColor(monster.types[0]);
     const type2color = typeColor(monster.types[1]) ?? type1color;
 
-    const monImageUrl = `${base}/data/mon_images/pokemon_icon_${monster.dex.toString().padStart(3, "0")}_00.png`;
+    const monImageUrl = monsterImageUrl(monster);
 </script>
 
 <div
@@ -21,7 +22,7 @@
 "
 >
     <!-- Image -->
-    <div class="relative z-0 size-18 p-3">
+    <div class="relative z-0 size-18 p-1">
         <!-- Circle bg -->
         <!-- <div
             class="rounded-full absolute -z-10 inset-3 size-10 shadow-sm bg-stone-100 shadow-stone-600 dark:bg-stone-800 dark:shadow-stone-800"
@@ -30,13 +31,13 @@
         <!-- Shadow bg -->
         {#if monster.isShadow}
             <div
-                class="absolute size-14 -z-10 inset-3 bg-no-repeat bg-center bg-contain rounded-full"
+                class="absolute -z-10 -inset-1 bg-no-repeat bg-center bg-contain rounded-full"
                 style="background-image: url({base}/data/materials/shadow.png)"
             ></div>
         {/if}
 
         <div
-            class="size-12 bg-contain bg-center bg-no-repeat"
+            class="size-16 bg-contain bg-center bg-no-repeat"
             style="background-image: url({monImageUrl});"
         ></div>
     </div>

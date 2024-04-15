@@ -10,6 +10,7 @@ type PokemonSource = {
         id: string,
     } | null,
     types: [ string, string ],
+    released: boolean,
 };
 
 /**
@@ -35,6 +36,11 @@ export function pokemonAndRankingFileHandler(srcList: {
     const pokemonList: Pokemon[] = [];
 
     for (const mon of pokemon) {
+        // only released
+        if (!mon.released) {
+            continue;
+        }
+
         // push to pokemon list
         pokemonList.push({
             dex: mon.dex,

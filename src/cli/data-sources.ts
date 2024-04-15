@@ -1,5 +1,8 @@
 import localization from "../lib/config/localization";
 import { pokemonAndRankingFileHandler, translationHandler } from "./file-handlers";
+import forms from "$lib/data/forms.json";
+
+const formAsRegexpOr = Object.keys(forms).join("|");
 
 export default {
     "pokemon": {
@@ -28,7 +31,7 @@ export default {
         "outDir": __dirname + "/../../static/data/mon_images",
         // only the base image, no shiny no event
         // means: /pokemon_icon_${dex_no}_00.png
-        "filter": /Images\/Pokemon\/pokemon_icon_[0-9]*_00\.png$/,
+        "filter": `Images\\/Pokemon\\/Addressable Assets\\/pm\\d+\\.?(${formAsRegexpOr})?\\.icon\\.png$`,
     },
     "cup_images": {
         "repository": "PokeMiners/pogo_assets",
