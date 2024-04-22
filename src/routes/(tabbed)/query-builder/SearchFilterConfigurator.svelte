@@ -1,11 +1,18 @@
 <script lang="ts">
-    import type { FilterConfigurations } from "./../../../lib/types/SearchFilter.d.ts";
+    import type {
+        FilterConfigurations,
+        GeneratedSearchQueryResults,
+    } from "./../../../lib/types/SearchFilter.d.ts";
     import Textfield from "$lib/components/form/Textfield.svelte";
     import SettingsItem from "./../../../lib/components/SettingsItem.svelte";
     import Checkbox from "$lib/components/form/Checkbox.svelte";
     import leagues from "$lib/config/leagues";
     import { __ } from "$lib/stores/translationStore";
     import Button from "$lib/components/form/Button.svelte";
+    import { createEventDispatcher } from "svelte";
+    import buildSearchString from "$lib/util/buildSearchString.js";
+    import Icon from "$lib/components/Icon.svelte";
+    import { mdiClipboard } from "@mdi/js";
 
     export let config: FilterConfigurations = {
         fromRank: 0,
@@ -19,9 +26,12 @@
         excludeCustomTags: [],
     };
 
+    const dispatch = createEventDispatcher();
+
     let fromRank = config.fromRank.toString();
     let untilRank = config.untilRank.toString();
     let newExcludeTag = "";
+    let searchStringResults: GeneratedSearchQueryResults | null = null;
 
     // number only fields
     $: fromRank = fromRank.replace(/\D/g, "");
@@ -35,6 +45,15 @@
     function removeTag(index: number) {
         config.excludeCustomTags.splice(index, 1);
         config = config;
+    }
+
+    function copyToClipboard(text: string) {
+        navigator.clipboard.writeText(text);
+    }
+
+    function saveAndGenerate() {
+        dispatch("saved");
+        searchStringResults = buildSearchString(config);
     }
 </script>
 
@@ -94,10 +113,22 @@
         </div>
 
         <div class="text-end pt-8">
-            <Button class="w-auto">Save & Generate</Button>
+            <Button class="w-auto" on:click={saveAndGenerate}
+                >Save & Generate</Button
+            >
         </div>
     </div>
 
     <!-- Output -->
-    <div class="lg:basis-1/4"></div>
+    <div class="lg:basis-1/4">
+        <Textfield value={searchStringResults?.inclusive} readonly>
+            <button
+                slot="append"
+                on:click={() =>
+                    copyToClipboard(searchStringResults?.inclusive ?? "")}
+            >
+                <Icon icon={mdiClipboard}></Icon>
+            </button>
+        </Textfield>
+    </div>
 </div>

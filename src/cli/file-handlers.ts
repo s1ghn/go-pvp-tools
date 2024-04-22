@@ -2,12 +2,15 @@ import type { Pokemon, PokemonTypes } from "../lib/types/Pokemon";
 import fs from "fs";
 import path from "path";
 import type dataSources from "./data-sources";
+import filterableRegions from "$lib/config/filterableRegions";
 
 type PokemonSource = {
     dex: number,
     speciesId: string,
     family: {
         id: string,
+        parent?: string,
+        evolutions?: string[];
     } | null,
     types: [ string, string ],
     released: boolean,
@@ -50,6 +53,10 @@ export function pokemonAndRankingFileHandler(srcList: {
             isShadow: mon.speciesId.includes("_shadow"),
             isMega: mon.speciesId.includes("_mega"),
             regionalVariant: getRegionalVariant(mon),
+            family: {
+                parent: mon.family?.parent,
+                evolutions: mon.family?.evolutions,
+            },
             leagues: Object.fromEntries(Object.entries({
                 "great": greatLeague,
                 "ultra": ultraLeague,
@@ -117,16 +124,10 @@ export function writeToFile(data: string | Uint8Array, filePath: string) {
     fs.writeFileSync(filePath, data);
 }
 
-function getRegionalVariant(pokemon: PokemonSource): string | null {
-    const regions = {
-        "alolan": "alola",
-        "hisuian": "hisui",
-        "galarian": "galar",
-    };
-
-    for (const region in regions) {
+function getRegionalVariant(pokemon: PokemonSource): keyof typeof filterableRegions | null {
+    for (const region in filterableRegions) {
         if (pokemon.speciesId.includes(`_${region}`)) {
-            return regions[ region as keyof typeof regions ];
+            return region as keyof typeof filterableRegions;
         }
     }
 

@@ -1,6 +1,7 @@
-{
+export default {
     "fMEGA": "Mega",
     "fALOLA": "Alola",
     "fGALARIAN": "Galarian",
-    "fHISUIAN": "Hisuian"
-}
+    "fHISUIAN": "Hisuian",
+    "fPALDEA": "Paldean",
+};

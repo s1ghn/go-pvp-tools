@@ -7,7 +7,10 @@ module.exports = {
 		'plugin:svelte/recommended'
 	],
 	parser: '@typescript-eslint/parser',
-	plugins: [ '@typescript-eslint' ],
+	plugins: [
+		'@typescript-eslint/eslint-plugin',
+		'@stylistic/eslint-plugin'
+	],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2020,
@@ -22,6 +25,7 @@ module.exports = {
 		"no-unused-vars": "warn",
 		"prefer-const": "warn",
 		"@typescript-eslint/no-unused-vars": "warn",
+		"@stylistic/max-len": [ "warn", { "code": 80 } ]
 	},
 	overrides: [
 		{
@@ -30,6 +34,11 @@ module.exports = {
 			parserOptions: {
 				parser: '@typescript-eslint/parser'
 			},
+		},
+		{
+			rules: {
+				// "@stylistic/max-len": [ "error", { "code": 40 } ]
+			}
 		}
 	]
 };

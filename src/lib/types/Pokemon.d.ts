@@ -1,4 +1,5 @@
 import type localization from "../config/localization";
+import type filterableRegions from "$lib/config/filterableRegions";
 
 type PokemonTypes = "bug" | "dark" | "dragon" | "electric" | "fairy" | "fighting" | "fire" | "flying" | "ghost" | "grass" | "ground" | "ice" | "normal" | "poison" | "psychic" | "rock" | "steel" | "water";
 
@@ -9,7 +10,11 @@ type Pokemon = {
     types: [ PokemonTypes, PokemonTypes | "none" ],
     isShadow: boolean,
     isMega: boolean,
-    regionalVariant: string | null,
+    regionalVariant: keyof typeof filterableRegions | null,
+    family: {
+        parent?: string,
+        evolutions?: string[],
+    },
     leagues: {
         // eslint-disable-next-line no-unused-vars
         [ _ in League ]: {

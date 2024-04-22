@@ -53,6 +53,20 @@ export default class MonsterFilterCollection {
         return new MonsterFilterCollection(broaderMatches);
     };
 
+    public filterByLeague = (league: (typeof leagues.rankings)[ number ] | null): MonsterFilterCollection => {
+        // do nothing if no league is selected
+        if (!league) {
+            return new MonsterFilterCollection(
+                this.monsters
+            );
+        }
+
+        return new MonsterFilterCollection(
+            this.monsters
+                .filter((monster) => monster.leagues[ league ])
+        );
+    };
+
     public orderByRank = (league: (typeof leagues.rankings)[ number ] | null): MonsterFilterCollection => {
         // do nothing if no league is selected
         if (!league) {

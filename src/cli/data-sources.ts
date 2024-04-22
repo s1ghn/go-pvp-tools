@@ -1,6 +1,6 @@
 import localization from "../lib/config/localization";
 import { pokemonAndRankingFileHandler, translationHandler } from "./file-handlers";
-import forms from "$lib/data/forms.json";
+import forms from "$lib/config/forms";
 
 const formAsRegexpOr = Object.keys(forms).join("|");
 
