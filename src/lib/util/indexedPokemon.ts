@@ -13,23 +13,21 @@ export const indexedBySpeciesId: Record<string, Pokemon> = monsters.reduce((acc,
  * 
  * NOTE: this is not familyId, but the family of species and form, so considering evolutions and parents
  */
-export const indexedByFormFamily: Record<string, Pokemon[]> = monsters.reduce((acc, mon) => {
-    function handleEntry(m: Pokemon): Record<string, Pokemon[]> {
-        acc[ mon.speciesId ] ??= [];
-        acc[ mon.speciesId ].push(m);
-
+export const groupedByEvolutionParents: Record<string, Pokemon[]> = monsters.reduce((acc, mon) => {
+    function recursivelyAddChildren(m: Pokemon, rootSpeciesId: string): void {
         m.family.evolutions?.forEach(e => {
             const monFound = monsters.find(mo => mo.speciesId === e)!;
-            handleEntry(monFound);
+            recursivelyAddChildren(monFound, rootSpeciesId);
         });
+    }
 
+    // parent should always be the top key for the family
+    if (mon.family.parent) {
         return acc;
     }
 
-    if (mon.family.evolutions) {
-        return acc;
-    }
+    acc[ mon.speciesId ] = [ mon ];
+    recursivelyAddChildren(mon, mon.speciesId);
 
-    acc = handleEntry(mon);
     return acc;
 }, {} as Record<string, Pokemon[]>);

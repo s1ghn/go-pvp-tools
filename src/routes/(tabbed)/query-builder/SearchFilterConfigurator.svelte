@@ -130,5 +130,11 @@
                 <Icon icon={mdiClipboard}></Icon>
             </button>
         </Textfield>
+
+        {#if searchStringResults?.inclusive?.length}
+            <div class="text-sm text-orange-600">
+                {searchStringResults.inclusive.length} Characters
+            </div>
+        {/if}
     </div>
 </div>

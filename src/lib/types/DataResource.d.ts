@@ -25,3 +25,9 @@ type GitTreeObject = {
     size: number,
     url: string;
 };
+
+export type FileHandlerParam = {
+    [ key: string ]: string | Uint8Array;
+};
+
+export type FileHandler = (FileHandlerParam) => void;

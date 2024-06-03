@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 import type dataSources from "./data-sources";
 import filterableRegions from "$lib/config/filterableRegions";
+import { getOriginalRegion } from "$lib/util/regions";
+import { calculateOptimalIVs } from "$lib/util/leagueIV";
 
 type PokemonSource = {
     dex: number,
@@ -12,6 +14,11 @@ type PokemonSource = {
         parent?: string,
         evolutions?: string[];
     } | null,
+    "baseStats": {
+        "atk": number,
+        "def": number,
+        "hp": number;
+    },
     types: [ string, string ],
     released: boolean,
 };
@@ -44,18 +51,18 @@ export function pokemonAndRankingFileHandler(srcList: {
             continue;
         }
 
-        // push to pokemon list
-        pokemonList.push({
+        const pokemon: Pokemon = {
             dex: mon.dex,
             speciesId: mon.speciesId,
             familyId: mon.family?.id ?? null,
             types: mon.types as [ PokemonTypes, PokemonTypes ],
             isShadow: mon.speciesId.includes("_shadow"),
             isMega: mon.speciesId.includes("_mega"),
+            region: getRegionalVariant(mon) ?? getOriginalRegion(mon.dex),
             regionalVariant: getRegionalVariant(mon),
             family: {
-                parent: mon.family?.parent,
-                evolutions: mon.family?.evolutions,
+                parent: mon.family?.parent ?? null,
+                evolutions: mon.family?.evolutions ?? null,
             },
             leagues: Object.fromEntries(Object.entries({
                 "great": greatLeague,
@@ -64,16 +71,31 @@ export function pokemonAndRankingFileHandler(srcList: {
             }).map(([ name, data ]) => {
                 const foundIndex = data.findIndex(d => d.speciesId === mon.speciesId);
                 const found = data[ foundIndex ];
+                const maxCp = {
+                    great: 1500,
+                    ultra: 2500,
+                    master: null,
+                }[ name ];
+                const optimalIvs = maxCp ? calculateOptimalIVs(maxCp, mon.baseStats) : null;
 
                 return [ name, found
                     ? {
                         rank: foundIndex + 1,
                         score: found.score,
+                        optimalIVs: optimalIvs ? {
+                            atk: optimalIvs.atk,
+                            def: optimalIvs.def,
+                            hp: optimalIvs.hp,
+                        } : null,
+                        optimalLevel: optimalIvs ? optimalIvs.level : null,
                     }
                     : null
                 ];
             })) as Pokemon[ "leagues" ],
-        });
+        };
+
+        // push to pokemon list
+        pokemonList.push(pokemon);
     }
 
     // write to file

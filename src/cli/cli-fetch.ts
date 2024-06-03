@@ -82,7 +82,7 @@ async function fetchData(handler: keyof typeof fetchResources) {
         // handle handler
         // abort further processing if handler is set
         if (typeof fileSource === "object" && fileSource.handler) {
-            fileSource.handler(contentList);
+            fileSource.handler(contentList, fileSource);
         }
     }
 

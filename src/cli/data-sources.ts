@@ -1,10 +1,27 @@
 import localization from "../lib/config/localization";
 import { pokemonAndRankingFileHandler, translationHandler } from "./file-handlers";
 import forms from "$lib/config/forms";
+import csvToJson from "./file-handlers/csv";
 
 const formAsRegexpOr = Object.keys(forms).join("|");
 
 export default {
+    "game_master": {
+        "files": {
+            "game_master": "https://github.com/PokeMiners/game_masters/raw/master/latest/latest.json",
+        },
+        outDir: __dirname + "/../lib/data",
+    },
+    // data from pokeapi not in gamerip
+    "pokeapi": {
+        "files": {
+            "pokemon_species": "https://github.com/PokeAPI/pokeapi/raw/master/data/v2/csv/pokemon_species.csv",
+            "generations": "https://github.com/PokeAPI/pokeapi/raw/master/data/v2/csv/generations.csv",
+            "regions": "https://github.com/PokeAPI/pokeapi/raw/master/data/v2/csv/regions.csv"
+        },
+        outDir: __dirname + "/../lib/data/pokeapi",
+        handler: csvToJson,
+    },
     "pokemon": {
         "files": {
             "pokemon_list": "https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/gamemaster/pokemon.json",
@@ -25,6 +42,7 @@ export default {
         outDir: __dirname + "/../lib/translations",
         handler: translationHandler,
     },
+    // assets like images
     "mon_images": {
         "repository": "PokeMiners/pogo_assets",
         "dataType": "githubTreeSource",

@@ -1,9 +1,14 @@
 import type { FilterConfigurations, GeneratedSearchQueryResults } from "$lib/types/SearchFilter";
-import { indexedByFormFamily } from "./indexedPokemon";
+import { groupedByEvolutionParents } from "./indexedPokemon";
 import filterableRegions from "$lib/config/filterableRegions";
 import { __ } from "$lib/stores/translationStore";
+import { getOriginalRegion } from "./regions";
+import type { Pokemon } from "$lib/types/Pokemon";
+import pokemon from "$lib/data/pokemon.json";
+import leagues from "$lib/config/leagues";
 
-const noRegionKey = Object.keys(filterableRegions).map(a => `!${a}`).join('&');
+const monsters = pokemon as Pokemon[];
+
 let translate = (key: string) => key;
 let shadowFilterKeyTranslated = "";
 
@@ -12,25 +17,9 @@ __.subscribe((translator) => {
     shadowFilterKeyTranslated = translate('filter_key_shadow');
 });
 
-/**
- * Can be converted into a filter search for a specific pokemon
- */
-type FilterBuilderInformation = {
-    /**
-     * Wether this should be included
-     */
-    isActive: boolean,
-    /**
-     * all form information unique to this pokemon
-     */
-    forms: string[],
-};
-
-/**
- * Contains dexed form combinations that are parseable by the PokemonGo search engine
- */
-type FormRegistrar = {
-    [ dex: string ]: FilterBuilderInformation[],
+type FilterableForms = {
+    shadow: string,
+    regional: string,
 };
 
 /**
@@ -38,21 +27,140 @@ type FormRegistrar = {
  */
 export default function buildSearchString(filters: FilterConfigurations): GeneratedSearchQueryResults {
     const dexedPokemonLiterals: {
-        [ dex: string ]: string[];
+        [ dex: string ]: Pokemon[];
     } = {};
 
-    const formRegistrar: FormRegistrar = {};
+    // group by speciesId
+    // as well es dex number for fast accessing
+    // for later operations
+    let [ groupedByDex, groupedBySpeciesId ] = monsters.reduce((acc, mon) => {
+        acc[ 0 ][ mon.dex ] = [ ...(acc[ 0 ][ mon.dex ] ?? []), mon ];
+        acc[ 1 ][ mon.speciesId ] = [ ...(acc[ 1 ][ mon.speciesId ] ?? []), mon ];
 
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    Object.entries(indexedByFormFamily).forEach(([ _, monsters ]) => {
+        return acc;
+    }, [ [], {} ] as [ Pokemon[][], Record<string, Pokemon[]> ]);
+
+    // walk through all monsters from bottom to top,
+    // performing operations and shortening next items to look into
+    while (groupedByDex.length) {
+        const mons = groupedByDex.pop()!;
+
+        // resolve highest evolution from family structure
+        // then walk through until most top parent is reached
+        // evaluate forms for pokemon (see later comments)
+        // and add form strings for every pokemon up until the highest evolution matching league
+
+        // 1st step: gather all end evolutions forms, from the most top parent
+        // this is to guarantee that the whole family is included
+        function findLatestEvolutions(m: Pokemon): Pokemon[] {
+            const evolutions = m.family.evolutions?.map(e => groupedBySpeciesId[ e ]!)[ 0 ];
+            if (!evolutions) {
+                return [ m ];
+            }
+
+            return evolutions.flatMap(findLatestEvolutions);
+        }
+        function findTopMostParent(m: Pokemon): Pokemon {
+            if (!m.family.parent) {
+                return m;
+            }
+
+            return findTopMostParent(groupedBySpeciesId[ m.family.parent ]![ 0 ]);
+        }
+
+        const latestEvolutions = mons.flatMap(findTopMostParent).flatMap(findLatestEvolutions);
+        const dexNumbersToStrip: number[] = [];
+
+        // forms gathered for pokemon in league or not
+        const existingForms: FilterableForms[] = [];
+        const activeForms: FilterableForms[] = [];
+
+        for (const mon of latestEvolutions) {
+            function findFormsForPokemonAndParents(m: Pokemon, include: null | boolean = null): Pokemon[] {
+                // check if pokemon is in filter to proceed building search string
+                include ??= leagues.rankings.some((league) => {
+                    // no league data = always irrelevant
+                    if (!m.leagues[ league ]) {
+                        return false;
+                    }
+
+                    // league is not selected in filters = always filter out
+                    if (!filters.selectedLeagues[ league as keyof typeof filters.selectedLeagues ]) {
+                        return false;
+                    }
+
+                    // league rank is not between filter rank settings
+                    const data = m.leagues[ league ]!;
+                    if (data.rank < filters.fromRank || data.rank > filters.untilRank) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+
+                const shadowForm = mon.isShadow ? shadowFilterKeyTranslated : `!${shadowFilterKeyTranslated}`;
+                const regionalForm = mon.regionalVariant ?? getOriginalRegion(mon.dex);
+
+                if ()
+                    const forms = formRegistrar[ m.dex ] ?? [];
+                const parent = m.family.parent ? findTopMostParent(groupedBySpeciesId[ m.family.parent ]![ 0 ]) : null;
+
+                if (parent) {
+                    return [ ...forms, ...findFormsForPokemonAndParents(parent) ];
+                }
+
+                return forms;
+            }
+
+            // forms
+
+            // include to existing if not already present
+            if (!existingForms.includes([ shadowForm, regionalForm ])) {
+                existingForms.push([ shadowForm, regionalForm ]);
+            }
+
+            if (!include) {
+                continue;
+            }
+
+            // include to active if not already present
+            if (!shadowFormsActive.includes(shadowForm)) {
+                shadowFormsActive.push(shadowForm);
+            }
+            if (!regionalFormsActive.includes(regionalForm)) {
+                regionalFormsActive.push(regionalForm);
+            }
+
+
+        }
+
+        // search through parents and evolutions
+    }
+
+    Object.entries(monsters).forEach(([ _, mon ]) => {
         let matchesLeagueFilter = false;
         let matchOnNotLatestEvolution = false;
         let lastMatchedSpeciesId: string | null = null;
 
-        // decide on how to include the pokemon,
-        // if the whole family is relevant add a "+" - which would mean search all evolutions of this form
-        // on the contrary: include all pokemons up until the evolution that is not relevant
-        monsters.forEach(mon => {
+        // filter settings should operate on dex level
+
+
+        // find evolutions that match the filter
+        // and add all pokemons up to that evolution to the list
+        if (!mon.family.parent) {
+            let viableForFilter = [];
+
+            function filterEvolutions(m: Pokemon): Pokemon[] {
+                const evolutions = m.family.evolutions?.map(e => monsters.find(mo => mo.speciesId === e)!);
+                if (!evolutions) {
+                    return [ m ];
+                }
+
+                return [ m, ...evolutions.flatMap(filterEvolutions) ];
+            }
+        }
+        mons.forEach(mon => {
             const leagueRelevant = Object.entries(mon.leagues).some(([ league, data ]) => {
                 // no league data = always irrelevant
                 if (!data) {
@@ -83,7 +191,7 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
         // add form information to registrar
         const anyMonster = monsters[ 0 ]!;
         const shadowForm = anyMonster.isShadow ? shadowFilterKeyTranslated : `!${shadowFilterKeyTranslated}`;
-        const regionalForm = anyMonster.regionalVariant ?? noRegionKey;
+        const regionalForm = anyMonster.regionalVariant ?? getOriginalRegion(anyMonster.dex);
 
         formRegistrar[ anyMonster.dex ] ??= [];
         formRegistrar[ anyMonster.dex ].push({
@@ -158,24 +266,25 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
  * i.E. "(shadow&alola),(!shadow&galar)"
  */
 function buildFormId(registrarForms: FilterBuilderInformation[]): string | null {
-    // create a parenthesis string unique for filtering this form
-    // strip out form groups which appear in all forms for
-    // all other forms
-    // so i.e. (shadow&alola),(!shadow&alola),(shadow&galar) => (shadow&galar)
-    const formGroupsPossible = [
-        // shadow
-        [ shadowFilterKeyTranslated, `!${shadowFilterKeyTranslated}` ],
-        // regional
-        [ noRegionKey, ...Object.keys(filterableRegions) ],
-    ];
-
     // Step 1: Forms in Form group
     registrarForms.forEach((formEntry, formEntryIndex) => {
         const forms = formEntry.forms;
 
         for (const formIndex in forms) {
-            // form index is the same index as form group
             const form = forms[ formIndex ];
+
+            // create a parenthesis string unique for filtering this form
+            // strip out form groups which appear in all forms for
+            // all other forms
+            // so i.e. (shadow&alola),(!shadow&alola),(shadow&galar) => alola,(shadow&galar)
+            const formGroupsPossible = [
+                // shadow
+                [ shadowFilterKeyTranslated, `!${shadowFilterKeyTranslated}` ],
+                // regions
+                [ getOriginalRegion(form), ...Object.keys(filterableRegions) ],
+            ];
+
+            // form index is the same index as form group
             const otherForms = formEntry.forms.filter((_, i) => i !== +formIndex);
             const formGroup = formGroupsPossible.findIndex(group => group.includes(form));
             let formsMissing = formGroupsPossible[ formGroup ].length;
@@ -295,14 +404,31 @@ function buildFormSearchString(formRegistrar: Record<string, string[]>): string 
                 // There is an issue with the PoGo Search Engine
                 // where attribute,!attribute does not actually
                 // list both attributes but none instead
-                // this must be addressed by removing the entire combination
-                const cartesianFiltered = cartesian.map(c => {
-                    const pool = c.split(',');
+                // this must be addressed by stripping both
+                // and if these were the only two attributes
+                // filter out the complete cartesian form
+                const cartesianFiltered = cartesian.reduce((acc, cur) => {
+                    // remove both negated and non negated when found
+                    const withoutDuplicates = cur.split(',').reduce((a, c) => {
+                        const reversedForm = c.indexOf('!') === 0 ? c.slice(1) : `!${c}`;
+                        const reversedFoundIndex = a.indexOf(reversedForm);
 
-                    const withoutNegation = a.indexOf('!') === 0 ? a.slice(1) : a;
+                        if (reversedFoundIndex !== -1) {
+                            a.splice(reversedFoundIndex, 1);
+                            return a;
+                        }
 
-                    return !cartesian.some(b => b.includes(withoutNegation) && b !== a);
-                });
+                        a.push(c);
+                        return a;
+                    }, [] as string[]).join(',');
+
+                    if (withoutDuplicates === '') {
+                        return acc;
+                    }
+
+                    acc.push(withoutDuplicates);
+                    return acc;
+                }, [] as string[]);
 
                 return cartesianFiltered.join("&");
             }).join('&');
