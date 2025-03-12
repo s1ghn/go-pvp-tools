@@ -27,7 +27,6 @@ type FilterableForms = {
  * Build PokemonGo Compatible Search strings from the given filters
  */
 export default function buildSearchString(filters: FilterConfigurations): GeneratedSearchQueryResults {
-    let dexSearch: Number[] = [];
     let formSearch: {
         [ dex: string ]: {
             /**
@@ -48,12 +47,12 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
         return acc;
     }, [ [], {} ] as [ Pokemon[][], Record<string, Pokemon> ]);
 
-    function getDexOfParents(m: Pokemon): Number[] {
+    function getParentTree(m: Pokemon): Pokemon[] {
         return [
             ...m.family?.parent && groupedBySpeciesId[ m.family.parent ]!
-                ? getDexOfParents(groupedBySpeciesId[ m.family.parent ]!) ?? []
+                ? getParentTree(groupedBySpeciesId[ m.family.parent ]!) ?? []
                 : [],
-            m.dex
+            m
         ];
     }
 
@@ -87,14 +86,11 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
             continue;
         }
 
-        const dexNumbers = getDexOfParents(mon);
-
-        // push to general dex based search string
-        dexSearch.push(...dexNumbers);
+        const parentTree = getParentTree(mon);
 
         // build form based search string
-        dexNumbers.forEach(dexNumber => {
-            const index = dexNumber.toString();
+        parentTree.forEach(monster => {
+            const index = monster.dex;
             formSearch[ index ] ??= {
                 shadow: null,
                 regions: [],
@@ -105,7 +101,7 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
                 : null;
 
             // push region if not already exists
-            const region = mon.region ?? getOriginalRegion(mon.dex);
+            const region = monster.region ?? getOriginalRegion(mon.dex);
             if (!formSearch[ index ].regions.includes(region)) {
                 formSearch[ index ].regions.push(region);
             }
