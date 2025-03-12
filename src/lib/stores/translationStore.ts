@@ -8,6 +8,8 @@ const translationStore = writable({} as Record<string, string>);
 languageStore.subscribe(($language) => {
     import(`$lib/translations/${$language}.json`).then((translations) => {
         translationStore.set(translations);
+    }).catch((exc) => {
+        console.log(`failed to load translations for ${$language}`);
     });
 });
 
