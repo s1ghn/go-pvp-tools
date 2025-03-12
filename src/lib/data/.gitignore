@@ -1,4 +1,6 @@
 **/*
+!/pokeapi
+!/pokeapi/**
 !.gitignore
 !forms.json
 !filterableRegions.json
