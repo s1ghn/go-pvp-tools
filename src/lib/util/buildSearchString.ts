@@ -116,12 +116,15 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
     // add unique dex numbers for family of all accepted monsters
     const regionTranslations = getRegionTranslations();
 
-    let allMons: Number[] = _.uniq(dexSearch);
     let cryptoDex: Number[] = [];
     let nonCryptoDex: Number[] = [];
     Object.entries(formSearch)
         .forEach(([ dex, form ]) => {
             if (form.shadow === null) {
+                // these should be included in both
+                // crypto and non crypto search
+                cryptoDex.push(+dex);
+                nonCryptoDex.push(+dex);
                 return;
             }
 
@@ -164,8 +167,10 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
         )
         .filter(a => a !== null);
 
+    // 
+
     const search = [
-        allMons.join(','),
+        // allMons.join(','),
         '!' + shadowFilterKeyTranslated + ',' + cryptoDex.join(','),
         shadowFilterKeyTranslated + ',' + nonCryptoDex.join(','),
         ...regionStrings,
