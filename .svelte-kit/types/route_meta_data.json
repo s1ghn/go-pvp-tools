@@ -1,0 +1,15 @@
+{
+	"/(tabbed)": [
+		"src/routes/+layout.ts"
+	],
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/(tabbed)/query-builder": [
+		"src/routes/+layout.ts"
+	],
+	"/(tabbed)/settings": [
+		"src/routes/+layout.ts"
+	]
+}
