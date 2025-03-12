@@ -38,18 +38,17 @@ jobs:
       - name: Install dependencies
         run: npm ci --omit=dev
 
-      - name: Cache Fetched Data
-        id: cache-fetched-restore
-        uses: actions/cache@v4
-        with:
-          path: |
-            src/lib/data
-            src/lib/translations
-            static/data
-          key: ${{ runner.os }}-fetched-${{ hashFiles('./GAMEINFO.md') }}
+      # - name: Cache Fetched Data
+      #   id: cache-fetched-restore
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       src/lib/data
+      #       src/lib/translations
+      #       static/data
+      #     key: ${{ runner.os }}-fetched-${{ hashFiles('./GAMEINFO.md') }}
 
       - name: Fetch Data
-        if: steps.cache-fetched-restore.outputs.cache-hit != 'true'
         run: bun run cli fetch
 
       - name: Build app
