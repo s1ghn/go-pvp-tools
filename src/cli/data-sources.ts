@@ -49,7 +49,7 @@ export default {
         "outDir": __dirname + "/../../static/data/mon_images",
         // only the base image, no shiny no event
         // means: /pokemon_icon_${dex_no}_00.png
-        "filter": `Images\\/Pokemon\\/Addressable Assets\\/pm\\d+\\.?(${formAsRegexpOr})?\\.icon\\.png$`,
+        "filter": `Images\\/Pokemon - 256x256\\/Addressable Assets\\/pm\\d+\\.?(${formAsRegexpOr})?\\.icon\\.png$`,
     },
     "cup_images": {
         "repository": "PokeMiners/pogo_assets",

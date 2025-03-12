@@ -13,9 +13,16 @@ type Pokemon = {
     isMega: boolean,
     region: string,
     regionalVariant: keyof typeof filterableRegions | null,
+    tags: string[],
+    released: boolean,
     family: {
         parent: string?,
         evolutions: string[]?,
+    },
+    baseStats: {
+        atk: number,
+        def: number,
+        hp: number,
     },
     leagues: {
         // eslint-disable-next-line no-unused-vars
@@ -26,6 +33,7 @@ type Pokemon = {
                 atk: number,
                 def: number,
                 hp: number,
+                level: number,
             } | null,
             optimalLevel: number | null,
         } | null

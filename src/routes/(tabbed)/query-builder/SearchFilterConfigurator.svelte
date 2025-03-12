@@ -9,12 +9,15 @@
     import leagues from "$lib/config/leagues";
     import { __ } from "$lib/stores/translationStore";
     import Button from "$lib/components/form/Button.svelte";
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onMount } from "svelte";
     import buildSearchString from "$lib/util/buildSearchString.js";
     import Icon from "$lib/components/Icon.svelte";
     import { mdiClipboard } from "@mdi/js";
 
-    export let config: FilterConfigurations = {
+    let fromRank = $state("");
+    let untilRank = $state("");
+
+    let config = $state({
         fromRank: 0,
         untilRank: 200,
         selectedLeagues: {
@@ -24,18 +27,56 @@
         },
         allLeaguesSelected: false,
         excludeCustomTags: [],
-    };
+    }) as FilterConfigurations;
 
     const dispatch = createEventDispatcher();
 
-    let fromRank = config.fromRank.toString();
-    let untilRank = config.untilRank.toString();
-    let newExcludeTag = "";
-    let searchStringResults: GeneratedSearchQueryResults | null = null;
+    let newExcludeTag = $state("");
+    let searchStringResults: GeneratedSearchQueryResults | null = $state(null);
 
-    // number only fields
-    $: fromRank = fromRank.replace(/\D/g, "");
-    $: untilRank = untilRank.replace(/\D/g, "");
+    let selectedLeagues = $derived(
+        Object.keys(config.selectedLeagues).filter(
+            (key) =>
+                config.selectedLeagues[
+                    key as keyof typeof config.selectedLeagues
+                ],
+        ),
+    );
+
+    onMount(() => {
+        fromRank = localStorage.getItem("queryBuilderFromRank") ?? "0";
+        untilRank = localStorage.getItem("queryBuilderUntilRank") ?? "200";
+
+        const leaguesStorage = localStorage.getItem("leaguesConfigured");
+        if (leaguesStorage) {
+            config.selectedLeagues = Object.fromEntries(
+                leaguesStorage.split(",").map((league) => [league, true]),
+            );
+        }
+    });
+
+    // strip all non numeric characters
+    // save to local storage
+    $effect(() => {
+        config.fromRank = parseInt(fromRank.replace(/\D/g, ""));
+        config.untilRank = parseInt(untilRank.replace(/\D/g, ""));
+
+        const nanFrom = isNaN(config.fromRank);
+        const nanUntil = isNaN(config.untilRank);
+
+        if (nanFrom) config.fromRank = 0;
+        if (nanUntil) config.untilRank = 0;
+
+        fromRank = nanFrom ? "" : config.fromRank.toString();
+        untilRank = nanUntil ? "" : config.untilRank.toString();
+
+        localStorage.setItem("queryBuilderFromRank", fromRank);
+        localStorage.setItem("queryBuilderUntilRank", untilRank);
+    });
+
+    $effect(() => {
+        localStorage.setItem("leaguesConfigured", selectedLeagues.join(","));
+    });
 
     function addCustomTag() {
         config.excludeCustomTags.push(newExcludeTag);
@@ -53,6 +94,7 @@
 
     function saveAndGenerate() {
         dispatch("saved");
+        console.log(config);
         searchStringResults = buildSearchString(config);
     }
 </script>
@@ -120,7 +162,9 @@
     </div>
 
     <!-- Output -->
-    <div class="lg:basis-1/4">
+    <div class="lg:basis-1/4 w-full pt-4">
+        Output
+
         <Textfield value={searchStringResults?.inclusive} readonly>
             <button
                 slot="append"

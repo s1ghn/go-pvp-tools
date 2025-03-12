@@ -15,7 +15,7 @@ export const indexedBySpeciesId: Record<string, Pokemon> = monsters.reduce((acc,
  */
 export const groupedByEvolutionParents: Record<string, Pokemon[]> = monsters.reduce((acc, mon) => {
     function recursivelyAddChildren(m: Pokemon, rootSpeciesId: string): void {
-        m.family.evolutions?.forEach(e => {
+        m?.family?.evolutions?.forEach(e => {
             const monFound = monsters.find(mo => mo.speciesId === e)!;
             recursivelyAddChildren(monFound, rootSpeciesId);
         });

@@ -1,6 +1,14 @@
 import pokemonSpecies from "$lib/data/pokeapi/pokemon_species.json";
 import regions from "$lib/data/pokeapi/regions.json";
 import generations from "$lib/data/pokeapi/generations.json";
+import translationStore from "$lib/stores/translationStore";
+import _ from "lodash";
+
+let translations: Record<string, string> = {};
+
+translationStore.subscribe((store) => {
+    translations = store;
+});
 
 export function getOriginalRegion(dexNo: number): string {
     // assume first match in pokemon list is the original released one
@@ -24,4 +32,31 @@ export function getOriginalRegion(dexNo: number): string {
     }
 
     return region;
+}
+
+/**
+ * Get a list of filter applicable regions
+ * @returns a list of regions with their translations
+ */
+export function getRegionTranslations(): Record<string, string> {
+    return regions.reduce((acc, region) => {
+        // watch out!
+        let translation = translations[ `filter_key_${region.identifier}` ] ?? null;
+
+        // FIXME: paldea, galar works too but needs manual translation 
+        if (region.identifier === "paldea") {
+            translation = "Paldea";
+        }
+
+        if (region.identifier === "galar") {
+            translation = "Galar";
+        }
+
+        if (!translation) {
+            return acc;
+        }
+
+        acc[ region.identifier ] = translation;
+        return acc;
+    }, {} as Record<string, string>);
 }

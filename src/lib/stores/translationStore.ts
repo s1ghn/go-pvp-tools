@@ -12,6 +12,8 @@ languageStore.subscribe(($language) => {
     });
 });
 
+export default translationStore;
+
 // final store is the one to use for svelte components
 // this will load the translations from the translationStore
 export const __ = derived(translationStore, ($translations) => {

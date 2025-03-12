@@ -14,6 +14,7 @@ type PokemonSource = {
         parent?: string,
         evolutions?: string[];
     } | null,
+    tags: string[],
     "baseStats": {
         "atk": number,
         "def": number,
@@ -60,6 +61,13 @@ export function pokemonAndRankingFileHandler(srcList: {
             isMega: mon.speciesId.includes("_mega"),
             region: getRegionalVariant(mon) ?? getOriginalRegion(mon.dex),
             regionalVariant: getRegionalVariant(mon),
+            tags: mon.tags,
+            released: mon.released,
+            baseStats: {
+                atk: mon.baseStats.atk,
+                def: mon.baseStats.def,
+                hp: mon.baseStats.hp,
+            },
             family: {
                 parent: mon.family?.parent ?? null,
                 evolutions: mon.family?.evolutions ?? null,
@@ -74,9 +82,10 @@ export function pokemonAndRankingFileHandler(srcList: {
                 const maxCp = {
                     great: 1500,
                     ultra: 2500,
-                    master: null,
-                }[ name ];
-                const optimalIvs = maxCp ? calculateOptimalIVs(maxCp, mon.baseStats) : null;
+                    master: 10000,
+                }[ name as "great" | "ultra" | "master" ];
+
+                const optimalIvs = calculateOptimalIVs(maxCp, mon.baseStats);
 
                 return [ name, found
                     ? {
@@ -86,6 +95,9 @@ export function pokemonAndRankingFileHandler(srcList: {
                             atk: optimalIvs.atk,
                             def: optimalIvs.def,
                             hp: optimalIvs.hp,
+                            level: optimalIvs.level,
+                            lowestProduct: optimalIvs.lowestProduct,
+                            highestProduct: optimalIvs.highestProduct,
                         } : null,
                         optimalLevel: optimalIvs ? optimalIvs.level : null,
                     }

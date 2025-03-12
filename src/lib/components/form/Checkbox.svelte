@@ -5,17 +5,11 @@
         checked?: boolean;
     }
 
-    export let checked: boolean = false;
+    let { checked = $bindable(false), ...otherProps } = $props() as $$Props;
 </script>
 
 <label class="block w-100 cursor-pointer select-none p-1">
-    <input
-        type="checkbox"
-        class="form-checkbox"
-        bind:checked
-        on:change
-        {...$$restProps}
-    />
+    <input type="checkbox" class="form-checkbox" bind:checked {...otherProps} />
 
     <slot />
 </label>

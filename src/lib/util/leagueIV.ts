@@ -19,7 +19,7 @@ type BaseStats = {
  * @param baseStats The base stats of the pokemon
  * @param cpMs A list of CP Multipliers where index is the level - 1 - NO HALF LEVELS HERE!
  */
-export function calculateOptimalIVs(cpLimit: number, baseStats: BaseStats): { atk: number, def: number, hp: number; level: number; } {
+export function calculateOptimalIVs(cpLimit: number, baseStats: BaseStats): { atk: number, def: number, hp: number; level: number; lowestProduct: number; highestProduct: number; } {
     const cappedCpms = levelCpms();
     const ivRange = [ ...Array(16).keys() ];
     const reversedCpms = cappedCpms.slice().reverse();
@@ -34,6 +34,9 @@ export function calculateOptimalIVs(cpLimit: number, baseStats: BaseStats): { at
         hp: 0,
     };
     let optimalLevel = 0;
+
+    let lowestMaxedProduct = 0;
+    let highestMaxedProduct = 0;
 
     outer: for (const atkIv of ivRange) {
         for (const defIv of ivRange) {
@@ -64,6 +67,22 @@ export function calculateOptimalIVs(cpLimit: number, baseStats: BaseStats): { at
                 const curHpProduct = Math.floor((baseStats.hp + hpIv) * cappedCpms[ highestLevelIndex ]);
                 const currentProduct = curAtkProduct * curDefProduct * curHpProduct;
 
+                // add lowest and highest maxed product if not set
+                if (lowestMaxedProduct === 0) {
+                    lowestMaxedProduct = currentProduct;
+                }
+                if (highestMaxedProduct === 0) {
+                    highestMaxedProduct = currentProduct;
+                }
+
+                // otherwise, if topping, switch out products
+                if (currentProduct < lowestMaxedProduct) {
+                    lowestMaxedProduct = currentProduct;
+                }
+                if (currentProduct > highestMaxedProduct) {
+                    highestMaxedProduct = currentProduct;
+                }
+
                 // if the current product is higher than the last product, update the optimal values
                 if (currentProduct > lastProduct) {
                     optimalProductiveValues = {
@@ -80,6 +99,8 @@ export function calculateOptimalIVs(cpLimit: number, baseStats: BaseStats): { at
 
                     // levels are 1 + half levels
                     optimalLevel = (highestLevelIndex / 2) + 1;
+
+                    highestMaxedProduct = currentProduct;
                 }
             }
         }
@@ -88,6 +109,8 @@ export function calculateOptimalIVs(cpLimit: number, baseStats: BaseStats): { at
     return {
         ...optimalIvs,
         level: optimalLevel,
+        lowestProduct: lowestMaxedProduct,
+        highestProduct: highestMaxedProduct,
     };
 }
 
