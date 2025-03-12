@@ -50,6 +50,7 @@ jobs:
 
       - name: Fetch Data
         run: bun run cli fetch
+        working-directory: ./
 
       - name: Build app
         run: npm run build
