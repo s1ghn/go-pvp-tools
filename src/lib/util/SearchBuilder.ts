@@ -62,8 +62,6 @@ export default class SearchBuilder {
                             return null;
                         }
 
-                        console.log(monster.speciesId);
-
                         return Object.keys(filter)[ 0 ];
                     },
                     true

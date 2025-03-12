@@ -105,7 +105,7 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
                 : null;
 
             // push region if not already exists
-            const region = mon.regionalVariant ?? getOriginalRegion(mon.dex);
+            const region = mon.region ?? getOriginalRegion(mon.dex);
             if (!formSearch[ index ].regions.includes(region)) {
                 formSearch[ index ].regions.push(region);
             }
@@ -132,8 +132,6 @@ export default function buildSearchString(filters: FilterConfigurations): Genera
 
             nonCryptoDex.push(+dex);
         });
-
-    console.log(regionTranslations);
 
     // build form search string
     const regionStrings = Object.entries(formSearch)
