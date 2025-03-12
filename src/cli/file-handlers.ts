@@ -122,9 +122,14 @@ export function translationHandler(srcList: {
     [ K in keyof typeof dataSources[ "translations" ][ "files" ] ]: string;
 }) {
     for (const lang in srcList) {
-        const original = JSON.parse(srcList[ lang ]) as {
-            data: string[];
-        };
+        let original = null;
+        try {
+            original = JSON.parse(srcList[ lang ]) as {
+                data: string[];
+            };
+        } catch (exc) {
+            continue;
+        }
 
         // data contains pairs of translation key and value
         const transformed = original.data.reduce((acc, cur, index) => {
