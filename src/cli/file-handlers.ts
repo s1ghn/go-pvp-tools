@@ -2,9 +2,9 @@ import type { Pokemon, PokemonTypes } from "../lib/types/Pokemon";
 import fs from "fs";
 import path from "path";
 import type dataSources from "./data-sources";
-import filterableRegions from "$lib/config/filterableRegions";
-import { getOriginalRegion } from "$lib/util/regions";
-import { calculateOptimalIVs } from "$lib/util/leagueIV";
+import filterableRegions from "../lib/config/filterableRegions";
+import { getOriginalRegion } from "../lib/util/regions";
+import { calculateOptimalIVs } from "../lib/util/leagueIV";
 
 type PokemonSource = {
     dex: number,
