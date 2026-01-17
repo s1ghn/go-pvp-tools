@@ -1,3 +1,3 @@
 # Latest Gameinfo update
 
-2025-10
+2026-01
