@@ -2,7 +2,7 @@
     import { base } from "$app/paths";
     import TabGroup from "$lib/components/TabGroup.svelte";
     import { page } from "$app/stores";
-    import { mdiChevronTripleUp, mdiCog, mdiTextBoxSearch } from "@mdi/js";
+    import { mdiChevronTripleUp, mdiCog, mdiTextBoxSearch, mdiSkullCrossbonesOutline } from "@mdi/js";
     import Icon from "$lib/components/Icon.svelte";
 
     const mainRoutes = {
@@ -15,6 +15,11 @@
             title: "Query Builder",
             icon: mdiTextBoxSearch,
             path: "query-builder",
+        },
+        rocket: {
+            title: "Rocket",
+            icon: mdiSkullCrossbonesOutline,
+            path: "rocket",
         },
         settings: {
             title: "Settings",
@@ -44,17 +49,16 @@
     class="flex-grow max-w-screen-2xl mx-auto"
 >
     <div slot="tab" let:tab let:isActive class="w-full">
-        {@const route = getRoute(tab)}
         <a
-            href="{base}/{route.path}"
+            href="{base}/{getRoute(tab).path}"
             class="block w-full text-center {isActive
                 ? 'text-stone-950 dark:text-stone-50'
                 : 'text-stone-400 dark:text-stone-500'}"
         >
-            <Icon icon={route.icon}></Icon>
+            <Icon icon={getRoute(tab).icon}></Icon>
 
             <span class="hidden sm:inline">
-                {route.title}
+                {getRoute(tab).title}
             </span>
         </a>
     </div>
