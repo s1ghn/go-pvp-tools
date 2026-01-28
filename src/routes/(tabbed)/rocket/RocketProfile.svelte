@@ -39,14 +39,27 @@
         return match ? parseInt(match[1]) : null;
     }
     
-    // Get Pokemon image URL
+    // Get Pokemon image URL - use LeekDuck CDN for reliability
     function getPokemonImageUrl(pokemon: Pokemon): string {
         const dex = getDexFromTemplate(pokemon.templateId);
-        if (dex) {
-            return `${base}/data/mon_images/pm${dex}.icon.png`;
+        if (!dex) {
+            return `https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm0.icon.png`;
         }
-        // Fallback to LeekDuck CDN
-        return `https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm0.icon.png`;
+        
+        // Check for form variants in the name
+        let formSuffix = '';
+        const name = pokemon.name.toLowerCase();
+        
+        if (name.includes('incarnate')) formSuffix = '.fINCARNATE';
+        else if (name.includes('therian')) formSuffix = '.fTHERIAN';
+        else if (name.includes('alolan') || name.includes('alola')) formSuffix = '.fALOLA';
+        else if (name.includes('galarian') || name.includes('galar')) formSuffix = '.fGALARIAN';
+        else if (name.includes('hisuian') || name.includes('hisui')) formSuffix = '.fHISUIAN';
+        else if (name.includes('paldean') || name.includes('paldea')) formSuffix = '.fPALDEAN';
+        else if (name.includes('shadow')) formSuffix = ''; // Shadow uses normal sprite
+        else if (name.includes('(normal)')) formSuffix = ''; // Normal form
+        
+        return `https://cdn.leekduck.com/assets/img/pokemon_icons_crop/pm${dex}${formSuffix}.icon.png`;
     }
     
     // Get type color for gradient

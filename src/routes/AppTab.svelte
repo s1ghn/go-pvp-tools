@@ -49,17 +49,16 @@
     class="flex-grow max-w-screen-2xl mx-auto"
 >
     <div slot="tab" let:tab let:isActive class="w-full">
-        {@const route = getRoute(tab)}
         <a
-            href="{base}/{route.path}"
+            href="{base}/{getRoute(tab).path}"
             class="block w-full text-center {isActive
                 ? 'text-stone-950 dark:text-stone-50'
                 : 'text-stone-400 dark:text-stone-500'}"
         >
-            <Icon icon={route.icon}></Icon>
+            <Icon icon={getRoute(tab).icon}></Icon>
 
             <span class="hidden sm:inline">
-                {route.title}
+                {getRoute(tab).title}
             </span>
         </a>
     </div>
