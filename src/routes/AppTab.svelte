@@ -2,7 +2,7 @@
     import { base } from "$app/paths";
     import TabGroup from "$lib/components/TabGroup.svelte";
     import { page } from "$app/stores";
-    import { mdiChevronTripleUp, mdiCog, mdiTextBoxSearch } from "@mdi/js";
+    import { mdiChevronTripleUp, mdiCog, mdiTextBoxSearch, mdiSkullCrossbonesOutline } from "@mdi/js";
     import Icon from "$lib/components/Icon.svelte";
 
     const mainRoutes = {
@@ -15,6 +15,11 @@
             title: "Query Builder",
             icon: mdiTextBoxSearch,
             path: "query-builder",
+        },
+        rocket: {
+            title: "Rocket",
+            icon: mdiSkullCrossbonesOutline,
+            path: "rocket",
         },
         settings: {
             title: "Settings",
