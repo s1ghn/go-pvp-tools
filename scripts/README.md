@@ -6,7 +6,7 @@ Utility scripts for importing and processing Pokemon GO data.
 
 **File:** `import-rocket-lineups.ts`
 
-Imports current Team GO Rocket lineups (Giovanni, Leaders, and Grunts) from the community-maintained [ccev/pogoinfo](https://github.com/ccev/pogoinfo) repository.
+Imports current Team GO Rocket lineups (Giovanni, Leaders, and Grunts) directly from **LeekDuck.com**.
 
 ### Usage
 
@@ -26,24 +26,27 @@ Creates/updates: `src/lib/data/rocket-lineups.json`
 
 ```json
 {
-  "lastUpdated": "2026-01-28T18:36:14.501Z",
-  "source": "https://raw.githubusercontent.com/ccev/pogoinfo/v2/active/grunts.json",
+  "lastUpdated": "2026-01-28T18:54:30.848Z",
+  "leekduckUpdated": "2026-01-23 05:40:52 -0400",
+  "source": "https://leekduck.com/rocket-lineups/",
   "giovanni": {
-    "id": "character_giovanni",
+    "id": "giovanni",
     "name": "Giovanni",
     "title": "Team GO Rocket Boss",
-    "quote": "",
-    "gender": "male",
+    "quote": "I will not tolerate your interference.",
+    "photoUrl": "https://cdn.leekduck.com/assets/img/rocket/boss-giovanni.png",
     "slots": {
       "slot1": {
-        "pokemon": ["PERSIAN_NORMAL"]
+        "pokemon": [{
+          "name": "Persian",
+          "type1": "normal",
+          "doubleWeaknesses": [],
+          "singleWeaknesses": ["Fighting"],
+          "templateId": "EXTENDED_V0053_POKEMON_PERSIAN"
+        }]
       },
-      "slot2": {
-        "pokemon": ["NIDOKING_NORMAL", "KINGLER_NORMAL", "KINGDRA_NORMAL"]
-      },
-      "slot3": {
-        "pokemon": ["REGICE"]
-      }
+      "slot2": { "pokemon": [...] },
+      "slot3": { "pokemon": [...] }
     }
   },
   "leaders": [...],
@@ -53,25 +56,22 @@ Creates/updates: `src/lib/data/rocket-lineups.json`
 
 ### Features
 
-- ✅ Fetches live data from ccev/pogoinfo (community-maintained, updated automatically)
-- ✅ Enriches Pokemon names with game master template IDs
+- ✅ Fetches live data directly from https://leekduck.com/rocket-lineups/
+- ✅ Extracts Pokemon data from HTML data-attributes
+- ✅ Includes Pokemon types (type1, type2)
+- ✅ Includes weaknesses (double and single)
+- ✅ Includes character photos and quotes
+- ✅ Tracks LeekDuck's last update date
+- ✅ Enriches with game master template IDs
 - ✅ Categorizes into Giovanni, Leaders (Arlo/Cliff/Sierra), and Grunts
-- ✅ Preserves type information for typed grunts
-- ✅ Structured JSON output ready for use in the app
 
 ### Data Source
 
-This importer uses **ccev/pogoinfo** as the data source instead of scraping LeekDuck directly because:
-
-1. **Reliability**: LeekDuck's page is JavaScript-rendered, making it harder to scrape
-2. **Structure**: PogoInfo provides well-structured JSON data
-3. **Automation**: PogoInfo is automatically updated by community bots
-4. **Accuracy**: Same source that LeekDuck and other tools use
-
-The data is essentially the same information displayed on https://leekduck.com/rocket-lineups/
+This importer scrapes **LeekDuck** directly by parsing the HTML data-attributes that LeekDuck embeds in their page (data-pokemon, data-type1, data-type2, data-double-weaknesses, data-single-weaknesses).
 
 ### Notes
 
 - Lineups are typically rotated monthly by Niantic
 - Giovanni's legendary reward (slot 3) changes with each research
 - The importer preserves game master template IDs for easy data linking
+- Run the importer whenever lineups change to get fresh data
