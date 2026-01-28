@@ -1,0 +1,734 @@
+{
+  "lastUpdated": "2026-01-28T18:36:14.501Z",
+  "source": "https://raw.githubusercontent.com/ccev/pogoinfo/v2/active/grunts.json",
+  "giovanni": {
+    "id": "character_giovanni",
+    "name": "Giovanni",
+    "title": "Team GO Rocket Boss",
+    "quote": "",
+    "gender": "male",
+    "slots": {
+      "slot1": {
+        "pokemon": [
+          "PERSIAN_NORMAL"
+        ]
+      },
+      "slot2": {
+        "pokemon": [
+          "NIDOKING_NORMAL",
+          "KINGLER_NORMAL",
+          "KINGDRA_NORMAL"
+        ]
+      },
+      "slot3": {
+        "pokemon": [
+          "REGICE"
+        ]
+      }
+    }
+  },
+  "leaders": [
+    {
+      "id": "character_executive_cliff",
+      "name": "Executive Cliff",
+      "title": "Team GO Rocket Leader",
+      "quote": "",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "LARVITAR_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "SKARMORY_NORMAL",
+            "KINGDRA_NORMAL",
+            "SCEPTILE"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "TYRANITAR_NORMAL",
+            "SWAMPERT_NORMAL",
+            "GYARADOS_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_executive_arlo",
+      "name": "Executive Arlo",
+      "title": "Team GO Rocket Leader",
+      "quote": "",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "TEDDIURSA_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "BLAZIKEN_NORMAL",
+            "HYPNO_NORMAL",
+            "GOLURK"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "SCIZOR_NORMAL",
+            "LUXRAY",
+            "BANETTE_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_executive_sierra",
+      "name": "Executive Sierra",
+      "title": "Team GO Rocket Leader",
+      "quote": "",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "MURKROW_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "STARAPTOR_NORMAL",
+            "SWAMPERT_NORMAL",
+            "STEELIX_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "HOUNDOOM_NORMAL",
+            "CHARIZARD_NORMAL",
+            "DRAGONITE_NORMAL"
+          ]
+        }
+      }
+    }
+  ],
+  "grunts": [
+    {
+      "id": "character_grunt_male",
+      "name": "Grunt Male",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "CHARMANDER_NORMAL",
+            "SQUIRTLE_NORMAL",
+            "BULBASAUR_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "QUILAVA_NORMAL",
+            "BAYLEEF_NORMAL",
+            "CROCONAW_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "SWAMPERT_NORMAL",
+            "SCEPTILE",
+            "BLAZIKEN_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_grunt_female",
+      "name": "Grunt Female",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "SNORLAX_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "POLIWRATH_NORMAL",
+            "SNORLAX_NORMAL",
+            "GARDEVOIR_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "SNORLAX_NORMAL",
+            "GYARADOS_NORMAL",
+            "DRAGONITE_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_bug_grunt_male",
+      "name": "Bug-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "bug",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "SKORUPI_NORMAL",
+            "SHUCKLE_NORMAL",
+            "JOLTIK"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "WEEDLE_NORMAL",
+            "KAKUNA_NORMAL",
+            "BEEDRILL_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "BEEDRILL_NORMAL",
+            "SCIZOR_NORMAL",
+            "FORRETRESS_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_dark_grunt_female",
+      "name": "Dark-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "dark",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "GRIMER_NORMAL",
+            "RATTATA_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "RATICATE_NORMAL",
+            "MUK_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "MUK_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_dragon_grunt_female",
+      "name": "Dragon-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "dragon",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "DRATINI_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "FLYGON_NORMAL",
+            "EXEGGUTOR_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "DRAGONITE_NORMAL",
+            "DRAGONAIR_NORMAL",
+            "FLYGON_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_fairy_grunt_female",
+      "name": "Fairy-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "fairy",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "RALTS_NORMAL",
+            "SNUBBULL_NORMAL",
+            "MAWILE_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "SNUBBULL_NORMAL",
+            "KIRLIA_NORMAL",
+            "GRANBULL_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "KIRLIA_NORMAL",
+            "GRANBULL_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_fighting_grunt_female",
+      "name": "Fighting-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "fighting",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "MAKUHITA_NORMAL",
+            "HITMONLEE_NORMAL",
+            "HITMONCHAN_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "HITMONCHAN_NORMAL",
+            "HITMONLEE_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "MACHAMP_NORMAL",
+            "HITMONLEE_NORMAL",
+            "HITMONCHAN_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_fire_grunt_female",
+      "name": "Fire-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "fire",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "NUMEL",
+            "TORCHIC_NORMAL",
+            "VULPIX_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "MAGMAR_NORMAL",
+            "QUILAVA_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "CAMERUPT",
+            "TYPHLOSION_NORMAL",
+            "NINETALES_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_flying_grunt_female",
+      "name": "Flying-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "flying",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "NATU",
+            "DUCKLETT",
+            "ZUBAT_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "XATU",
+            "STARAVIA_NORMAL",
+            "GOLBAT_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "DRAGONITE_NORMAL",
+            "CROBAT_NORMAL",
+            "GYARADOS_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_grass_grunt_male",
+      "name": "Grass-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "grass",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "CACNEA_NORMAL",
+            "ODDISH_NORMAL",
+            "TREECKO"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "GLOOM_NORMAL",
+            "BAYLEEF_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "AMOONGUSS",
+            "MEGANIUM_NORMAL",
+            "CACTURNE_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_ground_grunt_male",
+      "name": "Ground-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "ground",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "PHANPY",
+            "HIPPOPOTAS_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "HIPPOPOTAS_NORMAL",
+            "DONPHAN"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "HIPPOWDON_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_ice_grunt_female",
+      "name": "Ice-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "ice",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "SWINUB_NORMAL",
+            "SANDSHREW_NORMAL",
+            "VULPIX_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "SANDSLASH_NORMAL",
+            "SNOVER_NORMAL",
+            "NINETALES_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "CLOYSTER_NORMAL",
+            "ABOMASNOW_NORMAL",
+            "LAPRAS_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_normal_grunt_male",
+      "name": "Normal-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "normal",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "PATRAT",
+            "PIDOVE",
+            "WHISMUR_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "RATTATA_NORMAL",
+            "RATICATE_NORMAL",
+            "LOUDRED_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "URSARING_NORMAL",
+            "RATICATE_NORMAL",
+            "BIBAREL_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_poison_grunt_female",
+      "name": "Poison-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "poison",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "GRIMER_NORMAL",
+            "FOONGUS"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "NIDORINA_NORMAL",
+            "NIDORINO_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "WEEZING_NORMAL",
+            "MUK_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_psychic_grunt_male",
+      "name": "Psychic-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "psychic",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "NATU",
+            "ABRA_NORMAL",
+            "SPOINK"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "GIRAFARIG",
+            "RALTS_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "ALAKAZAM_NORMAL",
+            "HYPNO_NORMAL",
+            "METANG_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_rock_grunt_male",
+      "name": "Rock-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "rock",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "ONIX_NORMAL",
+            "ANORITH_NORMAL",
+            "LILEEP_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "ANORITH_NORMAL",
+            "LILEEP_NORMAL",
+            "GRAVELER_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "ONIX_NORMAL",
+            "STEELIX_NORMAL",
+            "GOLEM_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_water_grunt_female",
+      "name": "Water-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "water",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "MUDKIP_NORMAL",
+            "PSYDUCK_NORMAL",
+            "WAILMER"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "GOLDUCK_NORMAL",
+            "CROCONAW_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "FERALIGATR_NORMAL",
+            "GOLDUCK_NORMAL",
+            "WAILORD"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_water_grunt_male",
+      "name": "Water-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "water",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "MAGIKARP_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "MAGIKARP_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "MAGIKARP_NORMAL",
+            "GYARADOS_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_decoy_grunt_female",
+      "name": "Decoy Grunt Female",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "BELLSPROUT_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "RATICATE_NORMAL",
+            "WEEPINBELL_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "RATICATE_NORMAL",
+            "SNORLAX_NORMAL"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_ghost_grunt_male",
+      "name": "Ghost-type Male Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "ghost",
+      "gender": "male",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "DRIFLOON",
+            "SHUPPET_NORMAL",
+            "DUSKULL_NORMAL"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "DUSCLOPS_NORMAL",
+            "BANETTE_NORMAL",
+            "GOLETT"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "DUSKNOIR_NORMAL",
+            "BANETTE_NORMAL",
+            "GOLURK"
+          ]
+        }
+      }
+    },
+    {
+      "id": "character_electric_grunt_female",
+      "name": "Electric-type Female Grunt",
+      "title": "Team GO Rocket Grunt",
+      "quote": "",
+      "type": "electric",
+      "gender": "female",
+      "slots": {
+        "slot1": {
+          "pokemon": [
+            "SHINX",
+            "MAREEP_NORMAL",
+            "BLITZLE"
+          ]
+        },
+        "slot2": {
+          "pokemon": [
+            "VOLTORB_NORMAL",
+            "ELECTABUZZ_NORMAL"
+          ]
+        },
+        "slot3": {
+          "pokemon": [
+            "LUXRAY",
+            "AMPHAROS_NORMAL",
+            "ZEBSTRIKA"
+          ]
+        }
+      }
+    }
+  ]
+}
